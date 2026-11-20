@@ -12,9 +12,18 @@
   <p>Un recorrido de lo más básico a lo más táctico. Al final podrás mover a los jugadores de cada formación y ver cómo la usa tu equipo favorito.</p>
 </header>
 
-<nav class="roadmap" aria-label="Recorrido">
-  <ol id="nav"></ol>
-  <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+<nav class="roadmap" aria-label="Progreso del recorrido">
+  <div class="roadmap-inner">
+    <div class="roadmap-status" aria-live="polite">
+      <strong id="roadmapLabel">Etapa 1 · El juego</strong>
+      <span id="roadmapCount">1 de 7</span>
+    </div>
+    <div class="field-progress">
+      <div id="bar" class="field-fill" role="progressbar" aria-label="Progreso del recorrido" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1"></div>
+      <ol id="nav"></ol>
+      <span id="progressBall" class="progress-ball" aria-hidden="true"><i></i></span>
+    </div>
+  </div>
 </nav>
 
 <main>

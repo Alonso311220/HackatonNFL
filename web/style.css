@@ -1,6 +1,6 @@
 :root { --bg:#0f1b2d; --card:#182741; --card2:#1f3254; --ink:#e9eef7; --mute:#9fb0cb; --accent:#f5b301; --blue:#3f8cff; --red:#e5484d; --green:#2ecc71; }
 * { box-sizing:border-box; }
-html { scroll-behavior:smooth; scroll-padding-top:90px; }
+html { scroll-behavior:smooth; scroll-padding-top:125px; }
 body { margin:0; font-family:system-ui,Segoe UI,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.55; }
 h1 { font-size:2rem; margin:0 0 6px; }
 h2 { font-size:1.4rem; margin:0 0 12px; display:flex; align-items:center; gap:10px; }
@@ -10,18 +10,27 @@ h3 { font-size:1.05rem; margin:0 0 6px; color:var(--accent); }
 main { max-width:900px; margin:0 auto; padding:8px 16px 40px; }
 footer { max-width:900px; margin:0 auto; padding:0 16px 40px; color:var(--mute); font-size:.85rem; }
 
-/* roadmap */
-.roadmap { position:sticky; top:0; z-index:10; background:rgba(15,27,45,.95); backdrop-filter:blur(6px); border-bottom:1px solid #22355a; }
-.roadmap ol { list-style:none; margin:0 auto; padding:8px 16px; max-width:900px; display:flex; gap:6px; overflow-x:auto; }
-.roadmap a { display:flex; align-items:center; gap:6px; white-space:nowrap; padding:6px 12px; border-radius:20px; background:#22355a; color:var(--ink); text-decoration:none; font-size:.9rem; }
-.roadmap a .n { display:inline-grid; place-items:center; width:20px; height:20px; border-radius:50%; background:#33497a; font-size:.75rem; }
-.roadmap a.done .n { background:var(--green); color:#062; }
+/* recorrido: una sola barra con aspecto de campo */
+.roadmap { position:sticky; top:0; z-index:10; padding:6px 16px 8px; background:rgba(15,27,45,.96); backdrop-filter:blur(6px); border-bottom:1px solid #22355a; }
+.roadmap-inner { max-width:868px; margin:0 auto; }
+.roadmap-status { display:flex; justify-content:space-between; gap:12px; margin:0 2px 5px; color:var(--ink); font-size:.85rem; }
+.roadmap-status span { color:var(--mute); white-space:nowrap; }
+.field-progress { --steps:7; position:relative; height:70px; overflow:hidden; border:2px solid rgba(255,255,255,.65); border-radius:9px; background-color:#155f36; background-image:linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px),repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 9px,transparent 9px 18px); background-size:10% 100%,100% 18px; box-shadow:inset 24px 0 rgba(24,39,65,.36),inset -24px 0 rgba(24,39,65,.36); }
+.field-progress::before { content:""; position:absolute; z-index:1; top:22px; left:5%; right:5%; height:2px; border-top:2px dashed rgba(255,255,255,.35); border-bottom:2px dashed rgba(255,255,255,.35); }
+.field-fill { position:absolute; z-index:0; inset:0 auto 0 0; width:0; background:rgba(46,204,113,.3); border-right:2px solid rgba(186,255,209,.8); transition:width .55s ease; }
+.roadmap ol { position:absolute; z-index:2; inset:0; display:grid; grid-template-columns:repeat(var(--steps),1fr); list-style:none; margin:0; padding:0; }
+.roadmap li { min-width:0; }
+.roadmap a { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:1px; min-width:0; padding:0 2px 4px; color:#dce9e1; text-decoration:none; text-shadow:0 1px 2px #082b19; font-size:.67rem; }
+.roadmap a .n { display:inline-grid; place-items:center; width:21px; height:21px; border:1px solid rgba(255,255,255,.7); border-radius:50%; background:rgba(15,27,45,.82); font-size:.72rem; font-weight:800; text-shadow:none; }
+.roadmap a .stage-name { width:100%; overflow:hidden; text-align:center; text-overflow:ellipsis; white-space:nowrap; }
+.roadmap a.done .n { background:var(--green); border-color:#baffd1; color:#063d20; }
 .roadmap a.done .n::before { content:"✓"; }
 .roadmap a.done .n span { display:none; }
-.roadmap a[aria-current="step"] { background:var(--accent); color:#111; font-weight:700; }
-.roadmap a[aria-current="step"] .n { background:#111; color:var(--accent); }
-.progress { height:3px; background:#22355a; }
-#bar { height:100%; width:0; background:var(--accent); transition:width .3s; }
+.roadmap a[aria-current="step"] .n { background:var(--accent); border-color:#fff1b6; color:#111; transform:scale(1.1); }
+.roadmap a[aria-current="step"] .stage-name { color:#fff4be; font-weight:800; }
+.progress-ball { position:absolute; z-index:3; top:7px; left:calc(50% / var(--steps)); width:32px; height:19px; border:2px solid #fff; border-radius:50%; background:#8b4a1f; box-shadow:0 2px 5px rgba(0,0,0,.55); transform:translateX(-50%) rotate(-20deg); transition:left .55s cubic-bezier(.2,.8,.2,1); pointer-events:none; }
+.progress-ball i { position:absolute; top:7px; left:8px; width:13px; height:2px; background:#fff; }
+.progress-ball i::before { content:""; position:absolute; top:-3px; left:2px; width:7px; height:8px; border-left:1px solid #fff; border-right:1px solid #fff; }
 
 /* steps */
 .step { background:var(--card); border-radius:14px; padding:20px; margin:18px 0; border-left:5px solid #33497a; }
@@ -143,9 +152,19 @@ select { font:inherit; padding:7px 10px; border-radius:8px; border:1px solid #45
 #pOut .crow.best .fill { background:var(--green); }
 
 @media (max-width:720px) {
+  html { scroll-padding-top:105px; }
+  .field-progress { height:52px; box-shadow:inset 15px 0 rgba(24,39,65,.36),inset -15px 0 rgba(24,39,65,.36); }
+  .field-progress::before { top:18px; }
+  .roadmap a { padding-bottom:4px; }
+  .roadmap a .stage-name { display:none; }
+  .progress-ball { top:5px; width:29px; height:17px; }
+  .progress-ball i { top:6px; left:7px; }
   .pgrid { grid-template-columns:1fr; }
   .grid2, .lab { grid-template-columns:1fr; }
   .crow { grid-template-columns:90px 1fr 50px; }
   .timeline button { font-size:.72rem; padding:12px 2px; }
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } .ready .player { transition:none; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto; }
+  .ready .player, .field-fill, .progress-ball { transition:none; }
+}

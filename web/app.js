@@ -517,29 +517,91 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
   draw();
 })();
 
-/* ---------- hoja de ruta (navegación y progreso) ---------- */
+/* ---------- hoja de ruta: campo y balón de progreso ---------- */
 (function roadmap() {
   const steps = [...document.querySelectorAll(".step")];
   const nav = $("nav");
+  const field = document.querySelector(".field-progress");
+  const meter = $("bar");
+  const ball = $("progressBall");
+  const status = $("roadmapLabel");
+  const count = $("roadmapCount");
+
+  field.style.setProperty("--steps", steps.length);
+  meter.setAttribute("aria-valuemax", String(steps.length));
+
   const links = steps.map((sec, i) => {
-    const a = h("a", { href: "#" + sec.id }, h("span", { class: "n" }, h("span", {}, String(i + 1))), sec.dataset.title);
+    const a = h("a", { href: "#" + sec.id, "aria-label": `Etapa ${i + 1}: ${sec.dataset.title}` },
+      h("span", { class: "n" }, h("span", {}, String(i + 1))),
+      h("span", { class: "stage-name" }, sec.dataset.title));
     nav.append(h("li", {}, a));
     return a;
   });
-  const seen = new Set();
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(en => {
-      if (!en.isIntersecting) return;
-      const i = steps.indexOf(en.target);
-      steps.forEach((x, k) => x.classList.toggle("visible", k === i));
-      links.forEach((a, k) => {
-        if (k === i) a.setAttribute("aria-current", "step"); else a.removeAttribute("aria-current");
-      });
-      for (let k = 0; k < i; k++) { seen.add(k); links[k].classList.add("done"); }
-      $("bar").style.width = Math.round(100 * (i + 1) / steps.length) + "%";
-      const ol = nav, a = links[i];
-      ol.scrollLeft = a.offsetLeft - ol.clientWidth / 2 + a.offsetWidth / 2;
+
+  const placeBall = (i, completed = false) => {
+    const position = completed ? 97 : 100 * (i + 0.5) / steps.length;
+    const progress = completed ? 100 : position;
+    ball.style.left = position + "%";
+    meter.style.width = progress + "%";
+    meter.setAttribute("aria-valuenow", String(i + 1));
+    meter.setAttribute("aria-valuetext", completed
+      ? "Recorrido completado"
+      : `Etapa ${i + 1} de ${steps.length}: ${steps[i].dataset.title}`);
+  };
+
+  let activeIndex = -1;
+  let isComplete = false;
+
+  const activate = i => {
+    if (i === activeIndex && !isComplete) return;
+    activeIndex = i;
+    isComplete = false;
+    steps.forEach((section, k) => section.classList.toggle("visible", k === i));
+    links.forEach((a, k) => {
+      if (k === i) a.setAttribute("aria-current", "step");
+      else a.removeAttribute("aria-current");
+      if (k < i) a.classList.add("done");
     });
-  }, { rootMargin: "-30% 0px -60% 0px" });
-  steps.forEach(x => io.observe(x));
+    status.textContent = `Etapa ${i + 1} · ${steps[i].dataset.title}`;
+    count.textContent = `${i + 1} de ${steps.length}`;
+    placeBall(i);
+  };
+
+  const complete = () => {
+    if (isComplete) return;
+    isComplete = true;
+    links.forEach(a => a.removeAttribute("aria-current"));
+    links.at(-1).classList.add("done");
+    status.textContent = "¡Recorrido completado!";
+    count.textContent = `${steps.length} de ${steps.length}`;
+    placeBall(steps.length - 1, true);
+  };
+
+  // La línea imaginaria situada al 36 % de la pantalla determina la etapa activa.
+  // Al llegar al final, el balón entra en la zona de anotación y se completa la etapa 7.
+  const syncWithScroll = () => {
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 8) {
+      complete();
+      return;
+    }
+    const readingLine = window.innerHeight * 0.36;
+    let current = 0;
+    steps.forEach((section, i) => {
+      if (section.getBoundingClientRect().top <= readingLine) current = i;
+    });
+    activate(current);
+  };
+
+  let ticking = false;
+  const requestSync = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      syncWithScroll();
+      ticking = false;
+    });
+  };
+  window.addEventListener("scroll", requestSync, { passive: true });
+  window.addEventListener("resize", requestSync);
+  syncWithScroll();
 })();

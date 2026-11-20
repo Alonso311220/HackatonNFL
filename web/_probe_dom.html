@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFL para curiosos: del juego a las formaciones</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-probe="{&quot;inner&quot;:496,&quot;client&quot;:481,&quot;scroll&quot;:481,&quot;bad&quot;:[]}">
+<header class="hero">
+  <h1>NFL para curiosos</h1>
+  <p>Un recorrido de lo mÃ¡s bÃ¡sico a lo mÃ¡s tÃ¡ctico. Al final podrÃ¡s mover a los jugadores de cada formaciÃ³n y ver cÃ³mo la usa tu equipo favorito.</p>
+</header>
+
+<nav class="roadmap" aria-label="Progreso del recorrido">
+  <div class="roadmap-inner">
+    <div class="roadmap-status" aria-live="polite">
+      <strong id="roadmapLabel">Etapa 1 · El juego</strong>
+      <span id="roadmapCount">1 de 7</span>
+    </div>
+    <div class="field-progress" style="--steps: 7;">
+      <div id="bar" class="field-fill" role="progressbar" aria-label="Progreso del recorrido" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1" aria-valuetext="Etapa 1 de 7: El juego" style="width: 7.14286%;"></div>
+      <ol id="nav"><li><a href="#step-1" aria-label="Etapa 1: El juego" aria-current="step"><span class="n"><span>1</span></span><span class="stage-name">El juego</span></a></li><li><a href="#step-2" aria-label="Etapa 2: DuraciÃ³n"><span class="n"><span>2</span></span><span class="stage-name">DuraciÃ³n</span></a></li><li><a href="#step-3" aria-label="Etapa 3: Equipos"><span class="n"><span>3</span></span><span class="stage-name">Equipos</span></a></li><li><a href="#step-4" aria-label="Etapa 4: Jugadores"><span class="n"><span>4</span></span><span class="stage-name">Jugadores</span></a></li><li><a href="#step-5" aria-label="Etapa 5: Formaciones"><span class="n"><span>5</span></span><span class="stage-name">Formaciones</span></a></li><li><a href="#step-6" aria-label="Etapa 6: Cuartos"><span class="n"><span>6</span></span><span class="stage-name">Cuartos</span></a></li><li><a href="#step-7" aria-label="Etapa 7: Predictor"><span class="n"><span>7</span></span><span class="stage-name">Predictor</span></a></li></ol>
+      <span id="progressBall" class="progress-ball" aria-hidden="true" style="left: 7.14286%;"><i></i></span>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- 1 -->
+  <section id="step-1" class="step visible" data-title="El juego">
+    <h2><span class="num">1</span> Â¿QuÃ© es el juego?</h2>
+    <p>El fÃºtbol americano enfrenta a <strong>dos equipos de 11 jugadores</strong> en el campo. El equipo que ataca (tiene el balÃ³n) intenta llevarlo hasta la zona de anotaciÃ³n contraria. El otro equipo defiende e intenta detenerlo.</p>
+    <p>La regla clave: el ataque tiene <strong>4 intentos (downs)</strong> para avanzar <strong>10 yardas</strong>. Si lo logra, recibe otros 4 intentos. Si no, entrega el balÃ³n.</p>
+
+    <div class="widget drive">
+      <h3>Prueba los 4 intentos</h3>
+      <p class="note">Tu equipo ataca de izquierda a derecha. <strong>Avanzar yardas</strong> sirve para mantener el balÃ³n y acercarte; los <strong>puntos</strong> solo se logran al llegar a la zona de anotaciÃ³n (derecha) o pateando.</p>
+      <div class="driveTop">
+        <svg id="downRing" viewBox="0 0 120 120" role="img" aria-label="Anillo de los 4 intentos"><circle cx="60" cy="60" r="50" fill="none" stroke-width="11" pathLength="100" stroke-dasharray="22 78" transform="rotate(-88.5 60 60)" class="seg cur"></circle><text x="95.35533905932738" y="24.64466094067263" class="segN">1</text><circle cx="60" cy="60" r="50" fill="none" stroke-width="11" pathLength="100" stroke-dasharray="22 78" transform="rotate(1.5 60 60)" class="seg "></circle><text x="95.35533905932738" y="95.35533905932738" class="segN">2</text><circle cx="60" cy="60" r="50" fill="none" stroke-width="11" pathLength="100" stroke-dasharray="22 78" transform="rotate(91.5 60 60)" class="seg "></circle><text x="24.64466094067263" y="95.35533905932738" class="segN">3</text><circle cx="60" cy="60" r="50" fill="none" stroke-width="11" pathLength="100" stroke-dasharray="22 78" transform="rotate(181.5 60 60)" class="seg "></circle><text x="24.644660940672615" y="24.64466094067263" class="segN">4</text><circle cx="60" cy="60" r="38" fill="none" stroke-width="5" class="inTrack"></circle><circle cx="60" cy="60" r="38" fill="none" stroke-width="5" pathLength="100" class="inFill" stroke-dasharray="0 100" transform="rotate(-90 60 60)"></circle><text x="60" y="58" class="cBig">1º</text><text x="60" y="73" class="cSmall">faltan 10 yd</text></svg>
+        <div>
+          <div class="status" id="downStatus" aria-live="polite">Intento 1 de 4 · faltan 10 yardas · 75 para la zona de anotación</div>
+          <p class="note ringKey"><i class="k k1"></i> yardas del intento (anillo interior) Â· <i class="k k2"></i> intento actual (anillo exterior)</p>
+        </div>
+      </div>
+      <svg id="driveField" viewBox="0 0 450 315" role="img" aria-label="Campo de fÃºtbol americano con el balÃ³n y la lÃ­nea para primer down"><image href="Resources/Imagenes/Campo.webp" x="0" y="0" width="450" height="315" preserveAspectRatio="none"></image><rect x="378" y="70" width="62" height="155" class="zoneR"></rect><text x="409" y="147.5" class="zoneT" transform="rotate(90 409 147.5)">ZONA DE ANOTACIÓN</text><rect y="70" height="155" class="band" x="148.5" width="0"></rect><line y1="70" y2="225" class="scrLine" x1="148.5" x2="148.5"></line><line y1="70" y2="225" class="gainLine" x1="179.10000000000002" x2="179.10000000000002"></line><text y="66" class="lblY" x="179.10000000000002">META: 1.er down</text><text y="237" class="lblB" x="148.5">Inicio</text><g class="ball" style="transform: translate(148.5px, 147.5px);"><ellipse rx="9" ry="5.5"></ellipse><path d="M-4 0H4M-1.5 -2V2M1.5 -2V2" class="lace"></path></g><text class="pop" y="127.5"></text></svg>
+      <div class="legend">
+        <span><i class="dot off"></i> DÃ³nde estÃ¡s (lÃ­nea de golpeo)</span>
+        <span><i class="dot qb"></i> Meta de 10 yardas (primer down)</span>
+        <span><i class="dot zone"></i> Zona de anotaciÃ³n</span>
+      </div>
+      <p class="note">1) Avanzar en el campo:</p>
+      <div class="btns" id="downBtns"><button>Pase incompleto (0 yd)</button><button>Corrida corta (+3 yd)</button><button>Pase largo (+12 yd)</button><button>Pase profundo (+35 yd)</button><button>Captura al QB (−7 yd)</button></div>
+      <p id="downMsg" class="msg" aria-live="polite"></p>
+    </div>
+
+    <div class="widget">
+      <h3>2) Sumar puntos</h3>
+      <p class="note">Los botones se activan solo cuando la situaciÃ³n del campo lo permite.</p>
+      <div class="score" id="scoreTotal" aria-live="polite">0</div>
+      <div class="btns" id="scoreBtns"><button disabled="">Touchdown +6 (llegar a la zona)</button><button disabled="">Punto extra +1 (patada)</button><button disabled="">Conversión de 2 +2 (correr/pasar)</button><button disabled="" title="Muy lejos (92 yd): el pateador no llega">Gol de campo +3 (desde ≤ 55 yd)</button><button>Safety +2 (defensa)</button></div>
+      <p id="scoreMsg" class="msg" aria-live="polite"></p>
+      <button class="ghost" id="scoreReset">Reiniciar marcador</button>
+    </div>
+  </section>
+
+  <!-- 2 y 3 -->
+  <section id="step-2" class="step" data-title="DuraciÃ³n">
+    <h2><span class="num">2</span> Â¿CuÃ¡nto dura y cÃ³mo se reparte el tiempo?</h2>
+    <p>Un partido tiene <strong>60 minutos de reloj</strong> divididos en <strong>4 cuartos de 15 minutos</strong>, con un descanso al medio. Pero el reloj se detiene con frecuencia (pase incompleto, salida de la cancha, tiempo fuera), asÃ­ que un partido real dura <strong>cerca de 3 horas</strong>.</p>
+    <p class="note">Toca cada tramo para ver quÃ© pasa en Ã©l.</p>
+    <div class="timeline" id="timeline" role="group" aria-label="DistribuciÃ³n del tiempo"><button class="" data-key="q1" aria-pressed="true" style="flex:15">1.er cuarto<small>15 min</small></button><button class="" data-key="q2" aria-pressed="false" style="flex:15">2.º cuarto<small>15 min</small></button><button class="half" data-key="ht" aria-pressed="false" style="flex:12">Descanso<small>12 min</small></button><button class="" data-key="q3" aria-pressed="false" style="flex:15">3.er cuarto<small>15 min</small></button><button class="" data-key="q4" aria-pressed="false" style="flex:15">4.º cuarto<small>15 min</small></button><button class="ot" data-key="ot" aria-pressed="false" style="flex:10">Tiempo extra<small>10 min</small></button></div>
+    <div class="widget" id="timeInfo" aria-live="polite"><h3>1.er cuarto · 15 min</h3><p>15 minutos de reloj. Al terminar, los equipos cambian de lado del campo, pero conservan el balón y el intento en que iban.</p></div>
+  </section>
+
+  <!-- 4 -->
+  <section id="step-3" class="step" data-title="Equipos">
+    <h2><span class="num">3</span> Â¿CuÃ¡ntos equipos hay?</h2>
+    <p>La NFL tiene <strong>32 equipos</strong> en dos conferencias, <strong>AFC</strong> y <strong>NFC</strong>, de 16 equipos cada una. Cada conferencia se divide en 4 divisiones (Este, Norte, Sur y Oeste) de 4 equipos. Cada equipo juega <strong>17 partidos</strong> en la temporada regular. Siete equipos de cada conferencia llegan a los playoffs, y los dos campeones de conferencia juegan el Super Bowl.</p>
+    <div class="tabs" id="confTabs" role="group" aria-label="Conferencia"><button aria-pressed="true">AFC</button><button aria-pressed="false">NFC</button></div>
+    <div class="divisions" id="divisions"><div class="division"><h3>AFC Este</h3><button class="chip" aria-pressed="false">Buffalo Bills</button><button class="chip" aria-pressed="false">Miami Dolphins</button><button class="chip" aria-pressed="false">New England Patriots</button><button class="chip" aria-pressed="false">New York Jets</button></div><div class="division"><h3>AFC Norte</h3><button class="chip" aria-pressed="false">Baltimore Ravens</button><button class="chip" aria-pressed="false">Cincinnati Bengals</button><button class="chip" aria-pressed="false">Cleveland Browns</button><button class="chip" aria-pressed="false">Pittsburgh Steelers</button></div><div class="division"><h3>AFC Sur</h3><button class="chip" aria-pressed="false">Houston Texans</button><button class="chip" aria-pressed="false">Indianapolis Colts</button><button class="chip" aria-pressed="false">Jacksonville Jaguars</button><button class="chip" aria-pressed="false">Tennessee Titans</button></div><div class="division"><h3>AFC Oeste</h3><button class="chip" aria-pressed="false">Denver Broncos</button><button class="chip" aria-pressed="true">Kansas City Chiefs</button><button class="chip" aria-pressed="false">Las Vegas Raiders</button><button class="chip" aria-pressed="false">Los Angeles Chargers</button></div></div>
+    <p class="note">Elige un equipo. Lo usaremos en el paso 5 para mostrarte cÃ³mo ataca.</p>
+  </section>
+
+  <!-- 5 -->
+  <section id="step-4" class="step" data-title="Jugadores">
+    <h2><span class="num">4</span> Â¿QuÃ© hace cada jugador?</h2>
+    <p>Los 11 jugadores en el campo cambian segÃºn si el equipo ataca, defiende o patea. Abre cada posiciÃ³n para ver quÃ© hace.</p>
+    <div class="tabs" id="roleTabs" role="group" aria-label="Unidad"><button aria-pressed="true">Ataque</button><button aria-pressed="false">Defensa</button><button aria-pressed="false">Equipos especiales</button></div>
+    <div id="roleList" class="roles"><details><summary>Quarterback (QB)<small>en el campo: 1</small></summary><p>El líder del ataque. Recibe el balón del centro y decide si lo lanza, lo entrega a un corredor o corre con él. Es la posición más famosa.</p></details><details><summary>Corredor (RB)<small>en el campo: 0 a 2</small></summary><p>Recibe el balón del quarterback para correr con él. También bloquea y a veces recibe pases cortos.</p></details><details><summary>Fullback (FB)<small>en el campo: 0 a 1</small></summary><p>Un corredor grande cuyo trabajo principal es bloquear para abrirle camino al corredor principal.</p></details><details><summary>Receptor abierto (WR)<small>en el campo: 2 a 5</small></summary><p>Se coloca cerca de las bandas y corre rutas para recibir pases. Suelen ser los más rápidos del equipo.</p></details><details><summary>Ala cerrada (TE)<small>en el campo: 0 a 3</small></summary><p>Híbrido: bloquea como un liniero y también corre rutas para recibir pases. Se coloca pegado a la línea ofensiva.</p></details><details><summary>Línea ofensiva (OL)<small>en el campo: 5</small></summary><p>Cinco jugadores grandes: un centro (C), que pasa el balón, dos guardias (G) y dos tackles (T). Protegen al quarterback y abren espacios para correr. Casi nunca tocan el balón.</p></details></div>
+  </section>
+
+  <!-- 6 -->
+  <section id="step-5" class="step" data-title="Formaciones">
+    <h2><span class="num">5</span> Â¿QuÃ© es una formaciÃ³n?</h2>
+    <p>Antes de cada jugada, el ataque se coloca de una forma concreta: cuÃ¡ntos corredores, cuÃ¡ntos receptores y dÃ³nde estÃ¡ el quarterback. Eso es la <strong>formaciÃ³n</strong>. Cambiarla es la manera en que el entrenador le plantea un problema distinto a la defensa.</p>
+    <p>Elige una formaciÃ³n, <strong>arrastra a los jugadores</strong> (o selecciÃ³nalos y usa las flechas del teclado) y compara con el equipo que quieras.</p>
+
+    <div class="controls">
+      <div class="tabs" id="formTabs" role="group" aria-label="FormaciÃ³n"><button aria-pressed="true">Shotgun</button><button aria-pressed="false">Empty</button><button aria-pressed="false">Singleback</button><button aria-pressed="false">I-Form</button><button aria-pressed="false">Pistol</button><button aria-pressed="false">Jumbo</button></div>
+      <label>Equipo
+        <select id="teamSelect"><option value="ARI">Arizona Cardinals</option><option value="ATL">Atlanta Falcons</option><option value="BAL">Baltimore Ravens</option><option value="BUF">Buffalo Bills</option><option value="CAR">Carolina Panthers</option><option value="CHI">Chicago Bears</option><option value="CIN">Cincinnati Bengals</option><option value="CLE">Cleveland Browns</option><option value="DAL">Dallas Cowboys</option><option value="DEN">Denver Broncos</option><option value="DET">Detroit Lions</option><option value="GB">Green Bay Packers</option><option value="HOU">Houston Texans</option><option value="IND">Indianapolis Colts</option><option value="JAX">Jacksonville Jaguars</option><option value="KC">Kansas City Chiefs</option><option value="LV">Las Vegas Raiders</option><option value="LAC">Los Angeles Chargers</option><option value="LA">Los Angeles Rams</option><option value="MIA">Miami Dolphins</option><option value="MIN">Minnesota Vikings</option><option value="NE">New England Patriots</option><option value="NO">New Orleans Saints</option><option value="NYG">New York Giants</option><option value="NYJ">New York Jets</option><option value="PHI">Philadelphia Eagles</option><option value="PIT">Pittsburgh Steelers</option><option value="SF">San Francisco 49ers</option><option value="SEA">Seattle Seahawks</option><option value="TB">Tampa Bay Buccaneers</option><option value="TEN">Tennessee Titans</option><option value="WAS">Washington Football Team</option></select>
+      </label>
+      <label class="check"><input type="checkbox" id="showDef" checked=""> Mostrar defensa</label>
+      <button class="ghost" id="resetPos">Volver a la posiciÃ³n original</button>
+    </div>
+
+    <div class="lab">
+      <div>
+        <svg id="field" viewBox="0 0 100 56" role="img" aria-label="Campo con jugadores de ataque (azul) y defensa (rojo) que se pueden mover" class="ready"><rect x="0" y="0" width="100" height="56" fill="#1d6b3a"></rect><rect x="0" y="0" width="100" height="5" fill="#1a6235"></rect><rect x="0" y="10" width="100" height="5" fill="#1a6235"></rect><rect x="0" y="20" width="100" height="5" fill="#1a6235"></rect><rect x="0" y="30" width="100" height="5" fill="#1a6235"></rect><rect x="0" y="40" width="100" height="5" fill="#1a6235"></rect><rect x="0" y="50" width="100" height="5" fill="#1a6235"></rect><line x1="0" x2="100" y1="5" y2="5" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="10" y2="10" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="15" y2="15" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="20" y2="20" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="25" y2="25" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="30" y2="30" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="35" y2="35" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="40" y2="40" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="45" y2="45" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="50" y2="50" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="55" y2="55" stroke="#fff" stroke-opacity=".25" stroke-width=".25"></line><line x1="0" x2="100" y1="28" y2="28" stroke="#6fb1ff" stroke-width=".5" stroke-dasharray="1.5 1"></line><text x="1.5" y="27" fill="#cfe3ff" font-size="2" text-anchor="start">Línea de golpeo (donde empieza la jugada)</text><text x="1.5" y="54" fill="#cfe3ff" font-size="2" text-anchor="start">↑ El ataque avanza hacia arriba</text><g id="defG"><g class="player def" tabindex="0" role="button" aria-label="Línea defensiva (DL). Usa las flechas para moverlo." style="transform: translate(41px, 26.5px);"><circle r="2.6"></circle><text>DL</text></g><g class="player def" tabindex="0" role="button" aria-label="Línea defensiva (DL). Usa las flechas para moverlo." style="transform: translate(47px, 26.5px);"><circle r="2.6"></circle><text>DL</text></g><g class="player def" tabindex="0" role="button" aria-label="Línea defensiva (DL). Usa las flechas para moverlo." style="transform: translate(53px, 26.5px);"><circle r="2.6"></circle><text>DL</text></g><g class="player def" tabindex="0" role="button" aria-label="Línea defensiva (DL). Usa las flechas para moverlo." style="transform: translate(59px, 26.5px);"><circle r="2.6"></circle><text>DL</text></g><g class="player def" tabindex="0" role="button" aria-label="Linebacker (LB). Usa las flechas para moverlo." style="transform: translate(44px, 21px);"><circle r="2.6"></circle><text>LB</text></g><g class="player def" tabindex="0" role="button" aria-label="Linebacker (LB). Usa las flechas para moverlo." style="transform: translate(56px, 21px);"><circle r="2.6"></circle><text>LB</text></g><g class="player def" tabindex="0" role="button" aria-label="Esquinero (CB). Usa las flechas para moverlo." style="transform: translate(10px, 26px);"><circle r="2.6"></circle><text>CB</text></g><g class="player def" tabindex="0" role="button" aria-label="Esquinero (CB). Usa las flechas para moverlo." style="transform: translate(90px, 26px);"><circle r="2.6"></circle><text>CB</text></g><g class="player def" tabindex="0" role="button" aria-label="Esquinero (CB). Usa las flechas para moverlo." style="transform: translate(77px, 26px);"><circle r="2.6"></circle><text>CB</text></g><g class="player def" tabindex="0" role="button" aria-label="Safety (S). Usa las flechas para moverlo." style="transform: translate(38px, 12px);"><circle r="2.6"></circle><text>S</text></g><g class="player def" tabindex="0" role="button" aria-label="Safety (S). Usa las flechas para moverlo." style="transform: translate(62px, 12px);"><circle r="2.6"></circle><text>S</text></g></g><g id="offG"><g class="player off" tabindex="0" role="button" aria-label="Línea ofensiva (OL). Usa las flechas para moverlo." style="transform: translate(40px, 29.5px);"><circle r="2.6"></circle><text>T</text></g><g class="player off" tabindex="0" role="button" aria-label="Línea ofensiva (OL). Usa las flechas para moverlo." style="transform: translate(45px, 29.5px);"><circle r="2.6"></circle><text>G</text></g><g class="player off" tabindex="0" role="button" aria-label="Línea ofensiva (OL). Usa las flechas para moverlo." style="transform: translate(50px, 29.5px);"><circle r="2.6"></circle><text>C</text></g><g class="player off" tabindex="0" role="button" aria-label="Línea ofensiva (OL). Usa las flechas para moverlo." style="transform: translate(55px, 29.5px);"><circle r="2.6"></circle><text>G</text></g><g class="player off" tabindex="0" role="button" aria-label="Línea ofensiva (OL). Usa las flechas para moverlo." style="transform: translate(60px, 29.5px);"><circle r="2.6"></circle><text>T</text></g><g class="player off qb" tabindex="0" role="button" aria-label="Quarterback (QB). Usa las flechas para moverlo." style="transform: translate(50px, 36px);"><circle r="2.6"></circle><text>QB</text></g><g class="player off" tabindex="0" role="button" aria-label="Corredor (RB). Usa las flechas para moverlo." style="transform: translate(57px, 36px);"><circle r="2.6"></circle><text>RB</text></g><g class="player off" tabindex="0" role="button" aria-label="Ala cerrada (TE). Usa las flechas para moverlo." style="transform: translate(66px, 29.5px);"><circle r="2.6"></circle><text>TE</text></g><g class="player off" tabindex="0" role="button" aria-label="Receptor abierto (WR). Usa las flechas para moverlo." style="transform: translate(10px, 29.5px);"><circle r="2.6"></circle><text>WR</text></g><g class="player off" tabindex="0" role="button" aria-label="Receptor abierto (WR). Usa las flechas para moverlo." style="transform: translate(90px, 29.5px);"><circle r="2.6"></circle><text>WR</text></g><g class="player off" tabindex="0" role="button" aria-label="Receptor abierto (WR). Usa las flechas para moverlo." style="transform: translate(77px, 31.5px);"><circle r="2.6"></circle><text>WR</text></g></g></svg>
+        <div class="legend">
+          <span><i class="dot off"></i> Ataque</span>
+          <span><i class="dot qb"></i> Quarterback</span>
+          <span><i class="dot def"></i> Defensa</span>
+        </div>
+        <p class="widget playerInfo" id="playerInfo" aria-live="polite">Toca a un jugador para saber qué hace.</p>
+      </div>
+      <div>
+        <div class="widget" id="formInfo"><h3>Shotgun</h3><p>El quarterback se coloca unos 5 yardas atrás del centro. Así ve mejor la defensa y tiene más tiempo para lanzar. Es la formación más común de la liga.</p><p class="note">Ataque: 5 linieros, 1 quarterback, 1 corredor, 1 ala cerrada, 3 receptores. Defensa típica contra esta formación: nickel (4 de línea, 2 linebackers y 3 esquineros). La alineación de la defensa es ilustrativa.</p></div>
+        <div class="widget" id="teamInfo"><h3>Kansas City Chiefs: Shotgun</h3><p>Usaron la Shotgun en el 75 % de sus pases (255 jugadas). La liga la usa en el 64 %. Les resultó exitosa en el 52 % de las jugadas (liga: 47 %), con 6.0 yardas por jugada.</p><div class="bars"><p class="note">Todas sus formaciones (% de sus pases):</p><div class="row cur"><span>Shotgun</span><div class="track"><div class="fill" style="width:75.2%"></div></div><span class="val">75 %</span></div><div class="row"><span>Empty</span><div class="track"><div class="fill" style="width:13.3%"></div></div><span class="val">13 %</span></div><div class="row"><span>Singleback</span><div class="track"><div class="fill" style="width:6.8%"></div></div><span class="val">7 %</span></div><div class="row"><span>I-Form</span><div class="track"><div class="fill" style="width:2.9%"></div></div><span class="val">3 %</span></div><div class="row"><span>Pistol</span><div class="track"><div class="fill" style="width:1.5%"></div></div><span class="val">2 %</span></div><div class="row"><span>Jumbo</span><div class="track"><div class="fill" style="width:0.3%"></div></div><span class="val">0 %</span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="step-6" class="step" data-title="Cuartos">
+    <h2><span class="num">6</span> Â¿QuÃ© formaciÃ³n funciona mejor en cada cuarto?</h2>
+    <p>Con los datos de jugadas de pase de las semanas 1 a 8 de la temporada 2021, asÃ­ rindiÃ³ cada formaciÃ³n segÃºn el cuarto.</p>
+    <div class="tabs" id="qTabs" role="group" aria-label="Cuarto"><button aria-pressed="true">1.º cuarto</button><button aria-pressed="false">2.º cuarto</button><button aria-pressed="false">3.º cuarto</button><button aria-pressed="false">4.º cuarto</button></div>
+    <p class="talk" id="talk">En el 1.º cuarto, la formación más usada es la Shotgun (945 jugadas). La que mejor funcionó fue la I-Form: 53 % de jugadas exitosas y 7.1 yardas por jugada. La que menos rindió fue la Empty (45 %).</p>
+    <div id="chart"><div class="crow best"><div class="name">I-Form</div><div class="track" style="height:22px"><div class="fill" style="width:53.2%"></div></div><div class="val">53 %</div><div class="meta">7.1 yardas por jugada · 79 jugadas · 54 % de pases completos</div></div><div class="crow"><div class="name">Singleback</div><div class="track" style="height:22px"><div class="fill" style="width:52.8%"></div></div><div class="val">53 %</div><div class="meta">7.2 yardas por jugada · 337 jugadas · 58 % de pases completos</div></div><div class="crow"><div class="name">Pistol</div><div class="track" style="height:22px"><div class="fill" style="width:51.2%"></div></div><div class="val">51 %</div><div class="meta">6.0 yardas por jugada · 41 jugadas · 46 % de pases completos</div></div><div class="crow"><div class="name">Shotgun</div><div class="track" style="height:22px"><div class="fill" style="width:45.5%"></div></div><div class="val">46 %</div><div class="meta">6.2 yardas por jugada · 945 jugadas · 54 % de pases completos</div></div><div class="crow"><div class="name">Empty</div><div class="track" style="height:22px"><div class="fill" style="width:45.1%"></div></div><div class="val">45 %</div><div class="meta">6.1 yardas por jugada · 326 jugadas · 57 % de pases completos</div></div></div>
+    <p class="note">
+      "Ã‰xito" es el porcentaje de jugadas que avanzaron lo suficiente: al menos el 40 % de las yardas que faltaban en 1.er down, el 60 % en 2.Âº, y todas en 3.Âº y 4.Âº.
+      Solo se muestran formaciones con al menos <span id="min">30</span> jugadas en ese cuarto. Se omiten el tiempo extra y las formaciones muy raras (Wildcat).
+      Los datos no indican causa: una formaciÃ³n puede verse mejor porque se usa en situaciones mÃ¡s fÃ¡ciles.
+    </p>
+  </section>
+
+  <!-- 8 -->
+  <section id="step-7" class="step" data-title="Predictor">
+    <h2><span class="num">7</span> Predictor de jugada: Â¿quÃ© formaciÃ³n conviene?</h2>
+    <p>Describe la situaciÃ³n del partido y el modelo estima, para cada formaciÃ³n, quÃ© tan probable es que el ataque <strong>tenga Ã©xito</strong> en un pase. El modelo aprendiÃ³ de las jugadas de pase reales de las semanas 1 a 8 de 2021.</p>
+    <div class="widget predictor">
+      <div class="pgrid">
+        <div><span class="plabel">Intento (down)</span><div class="tabs" id="pDown" role="group" aria-label="Intento"><button aria-pressed="false">1.º</button><button aria-pressed="false">2.º</button><button aria-pressed="true">3.º</button><button aria-pressed="false">4.º</button></div></div>
+        <div><span class="plabel">Cuarto</span><div class="tabs" id="pQ" role="group" aria-label="Cuarto"><button aria-pressed="false">1.º</button><button aria-pressed="false">2.º</button><button aria-pressed="false">3.º</button><button aria-pressed="true">4.º</button></div></div>
+        <label>Yardas que faltan para el primer down: <b id="pToGoV">7 yd</b>
+          <input type="range" id="pToGo" min="1" max="20" value="7"></label>
+        <label>PosiciÃ³n en el campo: <b id="pGoalV">yarda 40 del rival (40 yd para anotar)</b>
+          <input type="range" id="pGoal" min="1" max="99" value="40"></label>
+        <label>Marcador: <b id="pDiffV">pierdes por 3</b>
+          <input type="range" id="pDiff" min="-21" max="21" value="-3"></label>
+        <label class="check"><input type="checkbox" id="pLate"> Ãšltimos 2 minutos del 2.Âº o 4.Âº cuarto</label>
+      </div>
+    </div>
+    <p class="talk" id="pTalk">Con 3.º intento y 7 yardas por recorrer, el modelo prefiere la Empty: 42 % de probabilidad de éxito y 6.7 yardas esperadas. Pero la diferencia entre formaciones es de solo 2.0 puntos: en esta situación casi da igual cuál elijan.</p>
+    <div id="pOut"><div class="crow best"><div class="name">Empty</div><div class="track" style="height:22px"><div class="fill" style="width:42.2%"></div></div><div class="val">42 %</div><div class="meta">6.7 yardas esperadas · 50 % de completar · 8 % de captura (sack)</div></div><div class="crow"><div class="name">I-Form</div><div class="track" style="height:22px"><div class="fill" style="width:41.6%"></div></div><div class="val">42 %</div><div class="meta">7.1 yardas esperadas · 46 % de completar · 10 % de captura (sack)</div></div><div class="crow"><div class="name">Singleback</div><div class="track" style="height:22px"><div class="fill" style="width:41.1%"></div></div><div class="val">41 %</div><div class="meta">7.4 yardas esperadas · 47 % de completar · 11 % de captura (sack)</div></div><div class="crow"><div class="name">Pistol</div><div class="track" style="height:22px"><div class="fill" style="width:40.3%"></div></div><div class="val">40 %</div><div class="meta">6.8 yardas esperadas · 46 % de completar · 8 % de captura (sack)</div></div><div class="crow"><div class="name">Shotgun ★</div><div class="track" style="height:22px"><div class="fill" style="width:40.2%"></div></div><div class="val">40 %</div><div class="meta">6.4 yardas esperadas · 47 % de completar · 9 % de captura (sack)</div></div><p class="note">★ = la formación que más usa Kansas City Chiefs en sus pases (75 %). Cambia de equipo en el paso 3.</p></div>
+    <div class="widget" id="pNear"><h3>¿Y qué pasó en la vida real?</h3><p>En 321 jugadas reales de 3.º intento con casi 7 yardas por recorrer y posición parecida, el 41 % tuvo éxito y promediaron 5.9 yardas. </p></div>
+    <p class="note" id="pNote">Qué tan confiable es: se entrenó con las semanas 1 a 6 y se probó con las semanas 7 y 8 (1921 jugadas que el modelo no había visto). Para «éxito» obtuvo un AUC de 0.631 (0.5 es adivinar, 1 es perfecto): mejora a un simple promedio, pero se equivoca a menudo. Una jugada de fútbol americano tiene mucho azar. Lo que más pesa es la situación (intento y yardas por recorrer); la formación cambia poco el resultado. Son probabilidades, no promesas, y solo incluyen jugadas de pase de 2021 (no hay corridas). Se omiten formaciones con menos de 30 jugadas (Jumbo, Wildcat).</p>
+  </section>
+</main>
+
+<footer>Datos: NFL Big Data Bowl (plays.csv). Las posiciones del diagrama son ilustrativas, no vienen de los datos de seguimiento.</footer>
+
+<script src="data.js"></script>
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script>setTimeout(()=>{let w=innerWidth;let bad=[...document.querySelectorAll("*")].map(e=>{let r=e.getBoundingClientRect();return [e.tagName,e.id,e.className,Math.round(r.left),Math.round(r.right),e.scrollWidth]}).filter(x=>x[4]>w+1).sort((a,b)=>b[4]-a[4]).slice(0,15);document.body.dataset.probe=JSON.stringify({inner:w,client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,bad})},1000)</script>
+
+
+</body></html>
