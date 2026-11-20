@@ -100,31 +100,108 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
 
 /* ---------- paso 1: downs y puntos ---------- */
 (function steps1() {
-  const state = { down: 1, toGo: 10 };
-  const play = (yards) => {
-    state.toGo -= yards;
-    if (state.toGo <= 0) {
-      $("downMsg").textContent = "¡Primer down! Avanzaron 10 yardas o más y reciben 4 intentos nuevos.";
-      state.down = 1; state.toGo = 10;
+  // Geometría de Campo.webp (450x315): la cancha de juego va de x=72 (propia goal line) a x=378 (goal line rival).
+  const X0 = 72, PX = (378 - 72) / 100, YT = 70, YB = 225, YM = (YT + YB) / 2;
+  const xAt = yd => X0 + yd * PX;              // yd: 0 = propia línea de gol, 100 = línea de gol rival
+  const START = 25;
+  const state = { ball: START, start: START, down: 1, phase: "drive", extraDone: false };
+  const toGo = () => Math.max(0, Math.min(100, state.start + 10) - state.ball);
+
+  /* anillo */
+  const ring = $("downRing");
+  const seg = (i, cls) => s("circle", { cx: 60, cy: 60, r: 50, fill: "none", "stroke-width": 11, pathLength: 100,
+    "stroke-dasharray": "22 78", transform: `rotate(${-90 + i * 90 + 1.5} 60 60)`, class: "seg " + cls });
+  const drawRing = () => {
+    ring.replaceChildren();
+    for (let i = 1; i <= 4; i++) {
+      const cls = state.phase !== "drive" ? "done" : i < state.down ? "done" : i === state.down ? "cur" : "";
+      ring.append(seg(i - 1, cls));
+      const a = (-45 + (i - 1) * 90) * Math.PI / 180;
+      const t = s("text", { x: 60 + 50 * Math.cos(a), y: 60 + 50 * Math.sin(a), class: "segN" });
+      t.textContent = i; ring.append(t);
+    }
+    const gained = Math.max(0, Math.min(10, state.ball - state.start));
+    ring.append(s("circle", { cx: 60, cy: 60, r: 38, fill: "none", "stroke-width": 5, class: "inTrack" }));
+    ring.append(s("circle", { cx: 60, cy: 60, r: 38, fill: "none", "stroke-width": 5, pathLength: 100, class: "inFill",
+      "stroke-dasharray": `${gained * 10} ${100 - gained * 10}`, transform: "rotate(-90 60 60)" }));
+    const c1 = s("text", { x: 60, y: 58, class: "cBig" }); c1.textContent = state.phase === "drive" ? `${state.down}º` : "✔";
+    const c2 = s("text", { x: 60, y: 73, class: "cSmall" }); c2.textContent = state.phase === "drive" ? `faltan ${toGo()} yd` : "¡Llegaste!";
+    ring.append(c1, c2);
+  };
+
+  /* campo */
+  const fld = $("driveField");
+  fld.append(s("image", { href: "Resources/Imagenes/Campo.webp", x: 0, y: 0, width: 450, height: 315, preserveAspectRatio: "none" }));
+  const zone = s("rect", { x: 378, y: YT, width: 62, height: YB - YT, class: "zoneR" });
+  const zoneT = s("text", { x: 409, y: YM, class: "zoneT", transform: `rotate(90 409 ${YM})` }); zoneT.textContent = "ZONA DE ANOTACIÓN";
+  const band = s("rect", { y: YT, height: YB - YT, class: "band" });
+  const gainLine = s("line", { y1: YT, y2: YB, class: "gainLine" });
+  const scrLine = s("line", { y1: YT, y2: YB, class: "scrLine" });
+  const gainT = s("text", { y: YT - 4, class: "lblY" }); gainT.textContent = "META: 1.er down";
+  const scrT = s("text", { y: YB + 12, class: "lblB" }); scrT.textContent = "Inicio";
+  const ball = s("g", { class: "ball" }, s("ellipse", { rx: 9, ry: 5.5 }), s("path", { d: "M-4 0H4M-1.5 -2V2M1.5 -2V2", class: "lace" }));
+  const pop = s("text", { class: "pop", y: YM - 20 });
+  fld.append(zone, zoneT, band, scrLine, gainLine, gainT, scrT, ball, pop);
+
+  const drawField = () => {
+    const xs = xAt(state.start), xb = xAt(Math.min(state.ball, 100)), xg = xAt(Math.min(state.start + 10, 100));
+    band.setAttribute("x", xs); band.setAttribute("width", Math.max(0, xb - xs));
+    scrLine.setAttribute("x1", xs); scrLine.setAttribute("x2", xs);
+    gainLine.setAttribute("x1", xg); gainLine.setAttribute("x2", xg);
+    gainT.setAttribute("x", Math.min(xg, 340)); scrT.setAttribute("x", Math.min(xs, 400));
+    ball.style.transform = `translate(${xb}px, ${YM}px)`;
+    zone.classList.toggle("on", state.phase === "td");
+  };
+  const flash = (txt) => { pop.textContent = txt; pop.setAttribute("x", xAt(Math.min(state.ball, 100)) - 10);
+    pop.classList.remove("go"); void pop.getBoundingClientRect(); pop.classList.add("go"); };
+
+  /* puntos: dependen de dónde esté el balón */
+  let total = 0;
+  const sBtns = {};
+  const updateScoreBtns = () => {
+    const dist = 100 - state.ball + 17; // yardas del gol de campo (incluye fondo de la zona + 7 de snap)
+    sBtns.td.disabled = state.phase !== "td";
+    sBtns.xp.disabled = sBtns.two.disabled = state.phase !== "after";
+    sBtns.fg.disabled = state.phase !== "drive" || dist > 55;
+    sBtns.fg.title = sBtns.fg.disabled && state.phase === "drive" ? `Muy lejos (${dist} yd): el pateador no llega` : "";
+  };
+  const msg = t => { $("downMsg").textContent = t; };
+  const smsg = t => { $("scoreMsg").textContent = t; };
+  const refresh = () => { drawRing(); drawField(); updateScoreBtns(); $("downStatus").textContent = state.phase === "drive"
+    ? `Intento ${state.down} de 4 · faltan ${toGo()} yardas · ${100 - state.ball} para la zona de anotación` : "¡Balón en la zona de anotación!"; };
+  const newDrive = () => { Object.assign(state, { ball: START, start: START, down: 1, phase: "drive" }); };
+  const score = (pts, txt, next) => { total += pts; $("scoreTotal").textContent = total; smsg(txt); flash("+" + pts); next(); refresh(); };
+
+  const play = yards => {
+    if (state.phase !== "drive") { msg("Llegaste a la zona de anotación: ahora suma los puntos en el marcador de abajo."); return; }
+    state.ball = Math.max(1, Math.min(100, state.ball + yards));
+    const gained = state.ball - state.start;
+    if (state.ball >= 100) {
+      state.phase = "td"; msg("¡Cruzaste la línea de gol! Ahora sí puedes anotar: toca «Touchdown +6» abajo.");
+    } else if (gained >= 10) {
+      state.start = state.ball; state.down = 1;
+      msg(`¡Primer down! Avanzaron ${yards} yardas, la meta se mueve 10 yardas más adelante y reciben 4 intentos nuevos.`);
     } else if (state.down === 4) {
-      $("downMsg").textContent = "Se acabaron los intentos sin lograr las 10 yardas: el balón pasa al otro equipo.";
-      state.down = 1; state.toGo = 10;
+      msg("Se acabaron los intentos sin lograr las 10 yardas: el balón pasa al otro equipo. (Empezamos un ataque nuevo.)");
+      newDrive();
     } else {
       state.down++;
-      $("downMsg").textContent = yards ? `Ganaron ${yards} yardas.` : "Sin avance.";
+      msg(yards > 0 ? `Ganaron ${yards} yardas, pero aún no llegan a la meta.` : yards < 0 ? `Perdieron ${-yards} yardas.` : "Sin avance.");
     }
-    drawDown();
+    refresh();
   };
-  const drawDown = () => { $("downStatus").textContent = `Intento ${state.down} de 4 · faltan ${state.toGo} yardas`; };
-  [["Pase incompleto (0 yd)", 0], ["Corrida corta (+3 yd)", 3], ["Pase largo (+12 yd)", 12]]
+  [["Pase incompleto (0 yd)", 0], ["Corrida corta (+3 yd)", 3], ["Pase largo (+12 yd)", 12], ["Pase profundo (+35 yd)", 35], ["Captura al QB (−7 yd)", -7]]
     .forEach(([t, y]) => $("downBtns").append(h("button", { onclick: () => play(y) }, t)));
-  drawDown();
 
-  let total = 0;
-  const addScore = (pts) => { total += pts; $("scoreTotal").textContent = total; };
-  [["Touchdown +6", 6], ["Punto extra +1", 1], ["Conversión de 2 +2", 2], ["Gol de campo +3", 3], ["Safety +2", 2]]
-    .forEach(([t, p]) => $("scoreBtns").append(h("button", { onclick: () => addScore(p) }, t)));
-  $("scoreReset").onclick = () => { total = 0; $("scoreTotal").textContent = 0; };
+  const mkScore = (key, t, fn) => { sBtns[key] = h("button", { onclick: fn }, t); $("scoreBtns").append(sBtns[key]); };
+  mkScore("td", "Touchdown +6 (llegar a la zona)", () => score(6, "Touchdown: 6 puntos. Ahora elige el intento extra.", () => { state.phase = "after"; }));
+  mkScore("xp", "Punto extra +1 (patada)", () => score(1, "Patada al poste: 1 punto. Nuevo ataque.", newDrive));
+  mkScore("two", "Conversión de 2 +2 (correr/pasar)", () => score(2, "Conversión de 2 puntos. Nuevo ataque.", newDrive));
+  mkScore("fg", "Gol de campo +3 (desde ≤ 55 yd)", () => score(3, "Gol de campo: 3 puntos. Nuevo ataque.", newDrive));
+  mkScore("sf", "Safety +2 (defensa)", () => { total += 2; $("scoreTotal").textContent = total;
+    smsg("Safety: la defensa tumbó al rival en su propia zona de anotación. 2 puntos para la defensa."); });
+  $("scoreReset").onclick = () => { total = 0; $("scoreTotal").textContent = 0; smsg(""); newDrive(); msg(""); refresh(); };
+  refresh();
 })();
 
 /* ---------- paso 2: tiempo ---------- */
@@ -360,6 +437,84 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
   };
   tabGroup($("qTabs"), [1, 2, 3, 4].map(q => ({ key: q, label: q + ".º cuarto" })), 1, draw);
   draw(1);
+})();
+
+/* ---------- paso 7: predictor de jugada ---------- */
+(function step7() {
+  const st = { down: 3, q: 4 };
+  const sig = z => 1 / (1 + Math.exp(-Math.max(-30, Math.min(30, z))));
+  // Debe coincidir con feats() de build_model.py
+  const feats = (down, toGo, toGoal, q, diff, late, form) => {
+    const tg = Math.min(toGo, 25) / 10, d = Math.max(-21, Math.min(21, diff)) / 10;
+    const x = [1, down === 2, down === 3, down === 4, tg, down >= 3 ? tg : 0, toGoal / 100, toGoal <= 20,
+      q === 2, q === 3, q === 4, d, q === 4 ? d : 0, late];
+    MODEL_FORMS.forEach(k => { if (k !== MODEL_BASE) x.push(form === k); });
+    return x.map(Number);
+  };
+  const dot = (b, x) => b.reduce((a, v, i) => a + v * x[i], 0);
+  const val = id => Number($(id).value);
+
+  const read = () => ({ down: st.down, q: st.q, toGo: val("pToGo"), toGoal: val("pGoal"), diff: val("pDiff"),
+    late: (st.q === 2 || st.q === 4) && $("pLate").checked ? 1 : 0 });
+
+  const draw = () => {
+    const s0 = read();
+    $("pToGoV").textContent = s0.toGo + " yd";
+    $("pGoalV").textContent = s0.toGoal > 50 ? `tu yarda ${100 - s0.toGoal} (${s0.toGoal} yd para anotar)` : `yarda ${s0.toGoal} del rival (${s0.toGoal} yd para anotar)`;
+    $("pDiffV").textContent = s0.diff === 0 ? "empatado" : s0.diff > 0 ? `ganas por ${s0.diff}` : `pierdes por ${-s0.diff}`;
+    $("pLate").disabled = !(st.q === 2 || st.q === 4);
+
+    const res = MODEL_FORMS.map(f => {
+      const x = feats(s0.down, s0.toGo, s0.toGoal, s0.q, s0.diff, s0.late, f);
+      const m = TEAM_DATA.find(r => r.team === selectedTeam && r.formation === f);
+      return { f, ok: sig(dot(MODEL_COEF.ok, x)), comp: sig(dot(MODEL_COEF.comp, x)),
+        sack: sig(dot(MODEL_COEF.sack, x)), yards: dot(MODEL_COEF.yards, x), team: m ? m.share : 0 };
+    }).sort((a, b) => b.ok - a.ok);
+
+    const best = res[0], worst = res[res.length - 1];
+    const spread = 100 * (best.ok - worst.ok);
+    const fav = [...res].sort((a, b) => b.team - a.team)[0];
+    $("pTalk").textContent =
+      `Con ${s0.down}.º intento y ${s0.toGo} yardas por recorrer, el modelo prefiere la ${label(best.f)}: ${(100 * best.ok).toFixed(0)} % de probabilidad de éxito ` +
+      `y ${best.yards.toFixed(1)} yardas esperadas. ` +
+      (spread < 4 ? `Pero la diferencia entre formaciones es de solo ${spread.toFixed(1)} puntos: en esta situación casi da igual cuál elijan.`
+        : `La peor es la ${label(worst.f)} (${(100 * worst.ok).toFixed(0)} %).`);
+
+    const out = $("pOut"); out.replaceChildren();
+    res.forEach((r, i) => {
+      out.append(h("div", { class: "crow" + (i === 0 ? " best" : "") },
+        h("div", { class: "name" }, label(r.f) + (r.f === fav.f && fav.team ? " ★" : "")),
+        h("div", { class: "track", style: "height:22px" }, h("div", { class: "fill", style: `width:${(100 * r.ok).toFixed(1)}%` })),
+        h("div", { class: "val" }, (100 * r.ok).toFixed(0) + " %"),
+        h("div", { class: "meta" }, `${r.yards.toFixed(1)} yardas esperadas · ${(100 * r.comp).toFixed(0)} % de completar · ${(100 * r.sack).toFixed(0)} % de captura (sack)`)));
+    });
+    if (fav.team) out.append(h("p", { class: "note" }, `★ = la formación que más usa ${TEAMS[selectedTeam].name} en sus pases (${fav.team.toFixed(0)} %). Cambia de equipo en el paso 3.`));
+
+    // jugadas reales parecidas
+    const near = (dy, dg) => MODEL_PLAYS.filter(p => p[0] === s0.down && Math.abs(p[1] - s0.toGo) <= dy && Math.abs(p[2] - s0.toGoal) <= dg);
+    let sim = near(2, 15), wide = false;
+    if (sim.length < 30) { sim = near(4, 30); wide = true; }
+    const box = $("pNear"); box.replaceChildren(h("h3", {}, "¿Y qué pasó en la vida real?"));
+    if (!sim.length) box.append(h("p", {}, "No hay jugadas parecidas en los datos."));
+    else {
+      const ok = 100 * sim.reduce((a, p) => a + p[7], 0) / sim.length, yd = sim.reduce((a, p) => a + p[8], 0) / sim.length;
+      box.append(h("p", {}, `En ${sim.length} jugadas reales de ${s0.down}.º intento con ${wide ? "entre " + Math.max(1, s0.toGo - 4) + " y " + (s0.toGo + 4) : "casi " + s0.toGo} yardas por recorrer y posición parecida, ` +
+        `el ${ok.toFixed(0)} % tuvo éxito y promediaron ${yd.toFixed(1)} yardas. ` + (sim.length < 30 ? "Son pocas jugadas: tómalo con cautela." : "")));
+    }
+
+    const R = MODEL_REPORT;
+    $("pNote").textContent =
+      `Qué tan confiable es: se entrenó con las semanas 1 a 6 y se probó con las semanas 7 y 8 (${R.test} jugadas que el modelo no había visto). ` +
+      `Para «éxito» obtuvo un AUC de ${R.ok.auc} (0.5 es adivinar, 1 es perfecto): mejora a un simple promedio, pero se equivoca a menudo. Una jugada de fútbol americano tiene mucho azar. ` +
+      `Lo que más pesa es la situación (intento y yardas por recorrer); la formación cambia poco el resultado. ` +
+      `Son probabilidades, no promesas, y solo incluyen jugadas de pase de 2021 (no hay corridas). Se omiten formaciones con menos de 30 jugadas (Jumbo, Wildcat).`;
+  };
+
+  tabGroup($("pDown"), [1, 2, 3, 4].map(k => ({ key: k, label: k + ".º" })), st.down, k => { st.down = k; draw(); });
+  tabGroup($("pQ"), [1, 2, 3, 4].map(k => ({ key: k, label: k + ".º" })), st.q, k => { st.q = k; draw(); });
+  ["pToGo", "pGoal", "pDiff", "pLate"].forEach(id => $(id).addEventListener("input", draw));
+  teamListeners.push(draw);
+  draw();
 })();
 
 /* ---------- hoja de ruta (navegación y progreso) ---------- */

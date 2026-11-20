@@ -24,21 +24,34 @@
     <p>El fútbol americano enfrenta a <strong>dos equipos de 11 jugadores</strong> en el campo. El equipo que ataca (tiene el balón) intenta llevarlo hasta la zona de anotación contraria. El otro equipo defiende e intenta detenerlo.</p>
     <p>La regla clave: el ataque tiene <strong>4 intentos (downs)</strong> para avanzar <strong>10 yardas</strong>. Si lo logra, recibe otros 4 intentos. Si no, entrega el balón.</p>
 
-    <div class="grid2">
-      <div class="widget">
-        <h3>Prueba los 4 intentos</h3>
-        <p class="note">Elige qué pasa en cada jugada.</p>
-        <div class="status" id="downStatus" aria-live="polite"></div>
-        <div class="btns" id="downBtns"></div>
-        <p id="downMsg" class="msg" aria-live="polite"></p>
+    <div class="widget drive">
+      <h3>Prueba los 4 intentos</h3>
+      <p class="note">Tu equipo ataca de izquierda a derecha. <strong>Avanzar yardas</strong> sirve para mantener el balón y acercarte; los <strong>puntos</strong> solo se logran al llegar a la zona de anotación (derecha) o pateando.</p>
+      <div class="driveTop">
+        <svg id="downRing" viewBox="0 0 120 120" role="img" aria-label="Anillo de los 4 intentos"></svg>
+        <div>
+          <div class="status" id="downStatus" aria-live="polite"></div>
+          <p class="note ringKey"><i class="k k1"></i> yardas del intento (anillo interior) · <i class="k k2"></i> intento actual (anillo exterior)</p>
+        </div>
       </div>
-      <div class="widget">
-        <h3>Cómo se anotan puntos</h3>
-        <p class="note">Toca una jugada para sumar.</p>
-        <div class="score" id="scoreTotal" aria-live="polite">0</div>
-        <div class="btns" id="scoreBtns"></div>
-        <button class="ghost" id="scoreReset">Reiniciar marcador</button>
+      <svg id="driveField" viewBox="0 0 450 315" role="img" aria-label="Campo de fútbol americano con el balón y la línea para primer down"></svg>
+      <div class="legend">
+        <span><i class="dot off"></i> Dónde estás (línea de golpeo)</span>
+        <span><i class="dot qb"></i> Meta de 10 yardas (primer down)</span>
+        <span><i class="dot zone"></i> Zona de anotación</span>
       </div>
+      <p class="note">1) Avanzar en el campo:</p>
+      <div class="btns" id="downBtns"></div>
+      <p id="downMsg" class="msg" aria-live="polite"></p>
+    </div>
+
+    <div class="widget">
+      <h3>2) Sumar puntos</h3>
+      <p class="note">Los botones se activan solo cuando la situación del campo lo permite.</p>
+      <div class="score" id="scoreTotal" aria-live="polite">0</div>
+      <div class="btns" id="scoreBtns"></div>
+      <p id="scoreMsg" class="msg" aria-live="polite"></p>
+      <button class="ghost" id="scoreReset">Reiniciar marcador</button>
     </div>
   </section>
 
@@ -113,11 +126,35 @@
       Los datos no indican causa: una formación puede verse mejor porque se usa en situaciones más fáciles.
     </p>
   </section>
+
+  <!-- 8 -->
+  <section id="step-7" class="step" data-title="Predictor">
+    <h2><span class="num">7</span> Predictor de jugada: ¿qué formación conviene?</h2>
+    <p>Describe la situación del partido y el modelo estima, para cada formación, qué tan probable es que el ataque <strong>tenga éxito</strong> en un pase. El modelo aprendió de las jugadas de pase reales de las semanas 1 a 8 de 2021.</p>
+    <div class="widget predictor">
+      <div class="pgrid">
+        <div><span class="plabel">Intento (down)</span><div class="tabs" id="pDown" role="group" aria-label="Intento"></div></div>
+        <div><span class="plabel">Cuarto</span><div class="tabs" id="pQ" role="group" aria-label="Cuarto"></div></div>
+        <label>Yardas que faltan para el primer down: <b id="pToGoV"></b>
+          <input type="range" id="pToGo" min="1" max="20" value="7"></label>
+        <label>Posición en el campo: <b id="pGoalV"></b>
+          <input type="range" id="pGoal" min="1" max="99" value="40"></label>
+        <label>Marcador: <b id="pDiffV"></b>
+          <input type="range" id="pDiff" min="-21" max="21" value="-3"></label>
+        <label class="check"><input type="checkbox" id="pLate"> Últimos 2 minutos del 2.º o 4.º cuarto</label>
+      </div>
+    </div>
+    <p class="talk" id="pTalk"></p>
+    <div id="pOut"></div>
+    <div class="widget" id="pNear"></div>
+    <p class="note" id="pNote"></p>
+  </section>
 </main>
 
 <footer>Datos: NFL Big Data Bowl (plays.csv). Las posiciones del diagrama son ilustrativas, no vienen de los datos de seguimiento.</footer>
 
 <script src="data.js"></script>
+<script src="model.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
