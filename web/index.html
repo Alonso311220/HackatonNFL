@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFL para curiosos: del juego a las formaciones</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <h1>NFL para curiosos</h1>
+  <p>Un recorrido de lo más básico a lo más táctico. Al final podrás mover a los jugadores de cada formación y ver cómo la usa tu equipo favorito.</p>
+</header>
+
+<nav class="roadmap" aria-label="Recorrido">
+  <ol id="nav"></ol>
+  <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+</nav>
+
+<main>
+  <!-- 1 -->
+  <section id="step-1" class="step" data-title="El juego">
+    <h2><span class="num">1</span> ¿Qué es el juego?</h2>
+    <p>El fútbol americano enfrenta a <strong>dos equipos de 11 jugadores</strong> en el campo. El equipo que ataca (tiene el balón) intenta llevarlo hasta la zona de anotación contraria. El otro equipo defiende e intenta detenerlo.</p>
+    <p>La regla clave: el ataque tiene <strong>4 intentos (downs)</strong> para avanzar <strong>10 yardas</strong>. Si lo logra, recibe otros 4 intentos. Si no, entrega el balón.</p>
+
+    <div class="grid2">
+      <div class="widget">
+        <h3>Prueba los 4 intentos</h3>
+        <p class="note">Elige qué pasa en cada jugada.</p>
+        <div class="status" id="downStatus" aria-live="polite"></div>
+        <div class="btns" id="downBtns"></div>
+        <p id="downMsg" class="msg" aria-live="polite"></p>
+      </div>
+      <div class="widget">
+        <h3>Cómo se anotan puntos</h3>
+        <p class="note">Toca una jugada para sumar.</p>
+        <div class="score" id="scoreTotal" aria-live="polite">0</div>
+        <div class="btns" id="scoreBtns"></div>
+        <button class="ghost" id="scoreReset">Reiniciar marcador</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 y 3 -->
+  <section id="step-2" class="step" data-title="Duración">
+    <h2><span class="num">2</span> ¿Cuánto dura y cómo se reparte el tiempo?</h2>
+    <p>Un partido tiene <strong>60 minutos de reloj</strong> divididos en <strong>4 cuartos de 15 minutos</strong>, con un descanso al medio. Pero el reloj se detiene con frecuencia (pase incompleto, salida de la cancha, tiempo fuera), así que un partido real dura <strong>cerca de 3 horas</strong>.</p>
+    <p class="note">Toca cada tramo para ver qué pasa en él.</p>
+    <div class="timeline" id="timeline" role="group" aria-label="Distribución del tiempo"></div>
+    <div class="widget" id="timeInfo" aria-live="polite"></div>
+  </section>
+
+  <!-- 4 -->
+  <section id="step-3" class="step" data-title="Equipos">
+    <h2><span class="num">3</span> ¿Cuántos equipos hay?</h2>
+    <p>La NFL tiene <strong>32 equipos</strong> en dos conferencias, <strong>AFC</strong> y <strong>NFC</strong>, de 16 equipos cada una. Cada conferencia se divide en 4 divisiones (Este, Norte, Sur y Oeste) de 4 equipos. Cada equipo juega <strong>17 partidos</strong> en la temporada regular. Siete equipos de cada conferencia llegan a los playoffs, y los dos campeones de conferencia juegan el Super Bowl.</p>
+    <div class="tabs" id="confTabs" role="group" aria-label="Conferencia"></div>
+    <div class="divisions" id="divisions"></div>
+    <p class="note">Elige un equipo. Lo usaremos en el paso 5 para mostrarte cómo ataca.</p>
+  </section>
+
+  <!-- 5 -->
+  <section id="step-4" class="step" data-title="Jugadores">
+    <h2><span class="num">4</span> ¿Qué hace cada jugador?</h2>
+    <p>Los 11 jugadores en el campo cambian según si el equipo ataca, defiende o patea. Abre cada posición para ver qué hace.</p>
+    <div class="tabs" id="roleTabs" role="group" aria-label="Unidad"></div>
+    <div id="roleList" class="roles"></div>
+  </section>
+
+  <!-- 6 -->
+  <section id="step-5" class="step" data-title="Formaciones">
+    <h2><span class="num">5</span> ¿Qué es una formación?</h2>
+    <p>Antes de cada jugada, el ataque se coloca de una forma concreta: cuántos corredores, cuántos receptores y dónde está el quarterback. Eso es la <strong>formación</strong>. Cambiarla es la manera en que el entrenador le plantea un problema distinto a la defensa.</p>
+    <p>Elige una formación, <strong>arrastra a los jugadores</strong> (o selecciónalos y usa las flechas del teclado) y compara con el equipo que quieras.</p>
+
+    <div class="controls">
+      <div class="tabs" id="formTabs" role="group" aria-label="Formación"></div>
+      <label>Equipo
+        <select id="teamSelect"></select>
+      </label>
+      <label class="check"><input type="checkbox" id="showDef" checked> Mostrar defensa</label>
+      <button class="ghost" id="resetPos">Volver a la posición original</button>
+    </div>
+
+    <div class="lab">
+      <div>
+        <svg id="field" viewBox="0 0 100 56" role="img" aria-label="Campo con jugadores de ataque (azul) y defensa (rojo) que se pueden mover"></svg>
+        <div class="legend">
+          <span><i class="dot off"></i> Ataque</span>
+          <span><i class="dot qb"></i> Quarterback</span>
+          <span><i class="dot def"></i> Defensa</span>
+        </div>
+        <p class="widget playerInfo" id="playerInfo" aria-live="polite">Toca a un jugador para saber qué hace.</p>
+      </div>
+      <div>
+        <div class="widget" id="formInfo"></div>
+        <div class="widget" id="teamInfo"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="step-6" class="step" data-title="Cuartos">
+    <h2><span class="num">6</span> ¿Qué formación funciona mejor en cada cuarto?</h2>
+    <p>Con los datos de jugadas de pase de las semanas 1 a 8 de la temporada 2021, así rindió cada formación según el cuarto.</p>
+    <div class="tabs" id="qTabs" role="group" aria-label="Cuarto"></div>
+    <p class="talk" id="talk"></p>
+    <div id="chart"></div>
+    <p class="note">
+      "Éxito" es el porcentaje de jugadas que avanzaron lo suficiente: al menos el 40 % de las yardas que faltaban en 1.er down, el 60 % en 2.º, y todas en 3.º y 4.º.
+      Solo se muestran formaciones con al menos <span id="min"></span> jugadas en ese cuarto. Se omiten el tiempo extra y las formaciones muy raras (Wildcat).
+      Los datos no indican causa: una formación puede verse mejor porque se usa en situaciones más fáciles.
+    </p>
+  </section>
+</main>
+
+<footer>Datos: NFL Big Data Bowl (plays.csv). Las posiciones del diagrama son ilustrativas, no vienen de los datos de seguimiento.</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

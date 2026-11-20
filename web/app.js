@@ -1,0 +1,390 @@
+"use strict";
+
+/* ---------- utilidades ---------- */
+const $ = id => document.getElementById(id);
+function h(tag, props = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v);
+  }
+  kids.flat().forEach(c => e.append(c));
+  return e;
+}
+const SVGNS = "http://www.w3.org/2000/svg";
+function s(tag, props = {}, ...kids) {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const [k, v] of Object.entries(props)) e.setAttribute(k, v);
+  kids.flat().forEach(c => e.append(c));
+  return e;
+}
+function tabGroup(container, items, initial, onPick) {
+  // items: [{key,label}]. Crea botones con aria-pressed.
+  container.replaceChildren();
+  const btns = items.map(it => {
+    const b = h("button", { "aria-pressed": String(it.key === initial), onclick: () => {
+      btns.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      onPick(it.key);
+    } }, it.label);
+    container.append(b);
+    return b;
+  });
+  return btns;
+}
+
+/* ---------- datos de apoyo ---------- */
+const ROLES = {
+  QB: { name: "Quarterback (QB)", side: "Ataque", count: "1", desc: "El líder del ataque. Recibe el balón del centro y decide si lo lanza, lo entrega a un corredor o corre con él. Es la posición más famosa." },
+  RB: { name: "Corredor (RB)", side: "Ataque", count: "0 a 2", desc: "Recibe el balón del quarterback para correr con él. También bloquea y a veces recibe pases cortos." },
+  FB: { name: "Fullback (FB)", side: "Ataque", count: "0 a 1", desc: "Un corredor grande cuyo trabajo principal es bloquear para abrirle camino al corredor principal." },
+  WR: { name: "Receptor abierto (WR)", side: "Ataque", count: "2 a 5", desc: "Se coloca cerca de las bandas y corre rutas para recibir pases. Suelen ser los más rápidos del equipo." },
+  TE: { name: "Ala cerrada (TE)", side: "Ataque", count: "0 a 3", desc: "Híbrido: bloquea como un liniero y también corre rutas para recibir pases. Se coloca pegado a la línea ofensiva." },
+  OL: { name: "Línea ofensiva (OL)", side: "Ataque", count: "5", desc: "Cinco jugadores grandes: un centro (C), que pasa el balón, dos guardias (G) y dos tackles (T). Protegen al quarterback y abren espacios para correr. Casi nunca tocan el balón." },
+  DL: { name: "Línea defensiva (DL)", side: "Defensa", count: "3 a 4", desc: "Se alinea frente a la línea ofensiva. Intenta tumbar al quarterback (capturarlo es un sack) y frenar las corridas." },
+  LB: { name: "Linebacker (LB)", side: "Defensa", count: "2 a 4", desc: "Jugador versátil detrás de la línea defensiva. Frena corredores, presiona al quarterback y cubre a receptores cercanos." },
+  CB: { name: "Esquinero (CB)", side: "Defensa", count: "2 a 3", desc: "Cubre a los receptores abiertos e intenta romper o interceptar pases. Necesita velocidad." },
+  S: { name: "Safety (S)", side: "Defensa", count: "2", desc: "La última línea de defensa. Se coloca lejos del balón para evitar jugadas largas y ayuda a cubrir y a tacklear." },
+  K: { name: "Pateador (K)", side: "Equipos especiales", count: "1", desc: "Patea el balón en goles de campo (3 puntos), puntos extra y patadas de salida." },
+  P: { name: "Despejador (P)", side: "Equipos especiales", count: "1", desc: "En 4.º down, cuando el ataque no quiere arriesgarse, patea el balón lejos para dejar al rival atrás en el campo." },
+  LS: { name: "Long snapper (LS)", side: "Equipos especiales", count: "1", desc: "Especialista que pasa el balón hacia atrás con precisión al pateador o al despejador." },
+  RET: { name: "Retornador (KR/PR)", side: "Equipos especiales", count: "1 a 2", desc: "Recibe las patadas del rival e intenta devolverlas lo más lejos posible." },
+};
+
+const FORMATIONS = {
+  SHOTGUN: {
+    name: "Shotgun", personnel: "1 corredor, 1 ala cerrada, 3 receptores", def: "nickel",
+    text: "El quarterback se coloca unos 5 yardas atrás del centro. Así ve mejor la defensa y tiene más tiempo para lanzar. Es la formación más común de la liga.",
+    players: [["QB", "QB", 50, 36], ["RB", "RB", 57, 36], ["TE", "TE", 66, 29.5], ["WR", "WR", 10, 29.5], ["WR", "WR", 90, 29.5], ["WR", "WR", 77, 31.5]],
+  },
+  EMPTY: {
+    name: "Empty", personnel: "0 corredores, 1 ala cerrada, 4 receptores", def: "nickel",
+    text: "Nadie acompaña al quarterback en el backfield (la zona detrás de la línea). Hay cinco posibles receptores, y la defensa tiene que cubrirlos a todos.",
+    players: [["QB", "QB", 50, 36], ["TE", "TE", 66, 29.5], ["WR", "WR", 8, 29.5], ["WR", "WR", 22, 31.5], ["WR", "WR", 92, 29.5], ["WR", "WR", 78, 31.5]],
+  },
+  SINGLEBACK: {
+    name: "Singleback", personnel: "1 corredor, 1 ala cerrada, 3 receptores", def: "base",
+    text: "El quarterback está pegado al centro y un solo corredor se coloca detrás. Permite tanto correr como pasar sin que la defensa lo sepa de antemano.",
+    players: [["QB", "QB", 50, 31.5], ["RB", "RB", 50, 38], ["TE", "TE", 66, 29.5], ["WR", "WR", 10, 29.5], ["WR", "WR", 90, 29.5], ["WR", "WR", 77, 31.5]],
+  },
+  I_FORM: {
+    name: "I-Form", personnel: "1 corredor, 1 fullback, 1 ala cerrada, 2 receptores", def: "base",
+    text: "Quarterback, fullback y corredor quedan en fila, como una letra I. Es la formación clásica para correr: el fullback bloquea por delante del corredor.",
+    players: [["QB", "QB", 50, 31.5], ["FB", "FB", 50, 35.5], ["RB", "RB", 50, 40], ["TE", "TE", 66, 29.5], ["WR", "WR", 10, 29.5], ["WR", "WR", 90, 29.5]],
+  },
+  PISTOL: {
+    name: "Pistol", personnel: "1 corredor, 1 ala cerrada, 3 receptores", def: "base",
+    text: "Mezcla entre Shotgun y Singleback. El quarterback está a media distancia (unas 4 yardas) y el corredor justo detrás de él. Combina la visión del Shotgun con la fuerza de correr de frente.",
+    players: [["QB", "QB", 50, 34.5], ["RB", "RB", 50, 40], ["TE", "TE", 66, 29.5], ["WR", "WR", 10, 29.5], ["WR", "WR", 90, 29.5], ["WR", "WR", 77, 31.5]],
+  },
+  JUMBO: {
+    name: "Jumbo", personnel: "1 corredor, 1 fullback, 3 alas cerradas", def: "base",
+    text: "Muchos jugadores grandes para bloquear, con tres alas cerradas. Se usa sobre todo cerca de la zona de anotación, cuando hace falta empujar unas pocas yardas.",
+    players: [["QB", "QB", 50, 31.5], ["FB", "FB", 50, 35.5], ["RB", "RB", 50, 40], ["TE", "TE", 66, 29.5], ["TE", "TE", 34, 29.5], ["TE", "TE", 72, 31.5]],
+  },
+};
+const OFF_LINE = [["OL", "T", 40, 29.5], ["OL", "G", 45, 29.5], ["OL", "C", 50, 29.5], ["OL", "G", 55, 29.5], ["OL", "T", 60, 29.5]];
+const DEF_LINE = [["DL", "DL", 41, 26.5], ["DL", "DL", 47, 26.5], ["DL", "DL", 53, 26.5], ["DL", "DL", 59, 26.5]];
+const DEF_BACK = {
+  base: [["LB", "LB", 36, 21], ["LB", "LB", 50, 21], ["LB", "LB", 64, 21], ["CB", "CB", 10, 26], ["CB", "CB", 90, 26], ["S", "S", 38, 12], ["S", "S", 62, 12]],
+  nickel: [["LB", "LB", 44, 21], ["LB", "LB", 56, 21], ["CB", "CB", 10, 26], ["CB", "CB", 90, 26], ["CB", "CB", 77, 26], ["S", "S", 38, 12], ["S", "S", 62, 12]],
+};
+const FORM_KEYS = Object.keys(FORMATIONS);
+const TEAM_MIN = 20;
+const label = f => (FORMATIONS[f] || { name: f }).name;
+
+/* ---------- estado compartido ---------- */
+let selectedTeam = "KC";
+const teamListeners = [];
+function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn()); }
+
+/* ---------- paso 1: downs y puntos ---------- */
+(function steps1() {
+  const state = { down: 1, toGo: 10 };
+  const play = (yards) => {
+    state.toGo -= yards;
+    if (state.toGo <= 0) {
+      $("downMsg").textContent = "¡Primer down! Avanzaron 10 yardas o más y reciben 4 intentos nuevos.";
+      state.down = 1; state.toGo = 10;
+    } else if (state.down === 4) {
+      $("downMsg").textContent = "Se acabaron los intentos sin lograr las 10 yardas: el balón pasa al otro equipo.";
+      state.down = 1; state.toGo = 10;
+    } else {
+      state.down++;
+      $("downMsg").textContent = yards ? `Ganaron ${yards} yardas.` : "Sin avance.";
+    }
+    drawDown();
+  };
+  const drawDown = () => { $("downStatus").textContent = `Intento ${state.down} de 4 · faltan ${state.toGo} yardas`; };
+  [["Pase incompleto (0 yd)", 0], ["Corrida corta (+3 yd)", 3], ["Pase largo (+12 yd)", 12]]
+    .forEach(([t, y]) => $("downBtns").append(h("button", { onclick: () => play(y) }, t)));
+  drawDown();
+
+  let total = 0;
+  const addScore = (pts) => { total += pts; $("scoreTotal").textContent = total; };
+  [["Touchdown +6", 6], ["Punto extra +1", 1], ["Conversión de 2 +2", 2], ["Gol de campo +3", 3], ["Safety +2", 2]]
+    .forEach(([t, p]) => $("scoreBtns").append(h("button", { onclick: () => addScore(p) }, t)));
+  $("scoreReset").onclick = () => { total = 0; $("scoreTotal").textContent = 0; };
+})();
+
+/* ---------- paso 2: tiempo ---------- */
+(function step2() {
+  const parts = [
+    { key: "q1", label: "1.er cuarto", min: 15, cls: "", text: "15 minutos de reloj. Al terminar, los equipos cambian de lado del campo, pero conservan el balón y el intento en que iban." },
+    { key: "q2", label: "2.º cuarto", min: 15, cls: "", text: "Cierra la primera mitad. Cuando quedan 2 minutos, el reloj se detiene (aviso de los 2 minutos). Los equipos aceleran para anotar antes del descanso." },
+    { key: "ht", label: "Descanso", min: 12, cls: "half", text: "Unos 12 minutos en el vestuario. Cada equipo recupera sus 3 tiempos fuera para la segunda mitad. En el Super Bowl, el descanso es más largo por el show musical." },
+    { key: "q3", label: "3.er cuarto", min: 15, cls: "", text: "Empieza la segunda mitad con una nueva patada inicial. Al terminar, de nuevo cambian de lado." },
+    { key: "q4", label: "4.º cuarto", min: 15, cls: "", text: "Aquí se deciden muchos partidos. Los equipos que van perdiendo suelen lanzar más, porque pasar detiene el reloj con más frecuencia que correr." },
+    { key: "ot", label: "Tiempo extra", min: 10, cls: "ot", text: "Si hay empate al final, se juega un periodo extra de 10 minutos (en temporada regular, puede terminar en empate). En playoffs se juega hasta que haya un ganador." },
+  ];
+  const tl = $("timeline"), info = $("timeInfo");
+  const show = p => {
+    [...tl.children].forEach(b => b.setAttribute("aria-pressed", String(b.dataset.key === p.key)));
+    info.replaceChildren(h("h3", {}, `${p.label} · ${p.min} min`), h("p", {}, p.text));
+  };
+  parts.forEach(p => {
+    const b = h("button", { class: p.cls, "data-key": p.key, "aria-pressed": "false", style: `flex:${p.min}`, onclick: () => show(p) },
+      p.label, h("small", {}, p.min + " min"));
+    tl.append(b);
+  });
+  show(parts[0]);
+})();
+
+/* ---------- paso 3: equipos ---------- */
+(function step3() {
+  let conf = "AFC";
+  const tabs = $("confTabs"), box = $("divisions");
+  const draw = () => {
+    box.replaceChildren();
+    ["Este", "Norte", "Sur", "Oeste"].forEach(div => {
+      const col = h("div", { class: "division" }, h("h3", {}, `${conf} ${div}`));
+      Object.entries(TEAMS).filter(([, t]) => t.conf === conf && t.div === div).forEach(([abbr, t]) => {
+        col.append(h("button", { class: "chip", "aria-pressed": String(abbr === selectedTeam), onclick: () => setTeam(abbr) }, t.name));
+      });
+      box.append(col);
+    });
+  };
+  tabGroup(tabs, [{ key: "AFC", label: "AFC" }, { key: "NFC", label: "NFC" }], conf, k => { conf = k; draw(); });
+  teamListeners.push(() => {
+    // si el equipo elegido es de la otra conferencia, mostrar esa
+    const c = TEAMS[selectedTeam].conf;
+    if (c !== conf) {
+      conf = c;
+      [...tabs.children].forEach(b => b.setAttribute("aria-pressed", String(b.textContent === conf)));
+    }
+    draw();
+  });
+  draw();
+})();
+
+/* ---------- paso 4: roles ---------- */
+(function step4() {
+  const groups = ["Ataque", "Defensa", "Equipos especiales"];
+  const list = $("roleList");
+  const draw = g => {
+    list.replaceChildren();
+    Object.values(ROLES).filter(r => r.side === g).forEach(r => {
+      list.append(h("details", {}, h("summary", {}, r.name, h("small", {}, `en el campo: ${r.count}`)), h("p", {}, r.desc)));
+    });
+  };
+  tabGroup($("roleTabs"), groups.map(g => ({ key: g, label: g })), "Ataque", draw);
+  draw("Ataque");
+})();
+
+/* ---------- paso 5: laboratorio de formaciones ---------- */
+(function step5() {
+  const svg = $("field");
+  const VBW = 100, VBH = 56, R = 2.6;
+
+  // cancha
+  svg.append(s("rect", { x: 0, y: 0, width: VBW, height: VBH, fill: "#1d6b3a" }));
+  for (let y = 0; y < VBH; y += 10) svg.append(s("rect", { x: 0, y, width: VBW, height: 5, fill: "#1a6235" }));
+  for (let y = 5; y < VBH; y += 5) svg.append(s("line", { x1: 0, x2: VBW, y1: y, y2: y, stroke: "#fff", "stroke-opacity": ".25", "stroke-width": ".25" }));
+  svg.append(s("line", { x1: 0, x2: VBW, y1: 28, y2: 28, stroke: "#6fb1ff", "stroke-width": ".5", "stroke-dasharray": "1.5 1" }));
+  const t = (x, y, txt, anchor = "start") => { const e = s("text", { x, y, fill: "#cfe3ff", "font-size": "2", "text-anchor": anchor }); e.textContent = txt; return e; };
+  svg.append(t(1.5, 27, "Línea de golpeo (donde empieza la jugada)"));
+  svg.append(t(1.5, 54, "↑ El ataque avanza hacia arriba"));
+
+  const defG = s("g", { id: "defG" }), offG = s("g", { id: "offG" });
+  svg.append(defG, offG);
+
+  const mk = (parent, side) => {
+    const g = s("g", { class: "player " + side, tabindex: "0", role: "button" });
+    g.append(s("circle", { r: R }), s("text", {}));
+    parent.append(g);
+    return { g, x: 0, y: 0, role: "", orig: [0, 0] };
+  };
+  const off = Array.from({ length: 11 }, () => mk(offG, "off"));
+  const def = Array.from({ length: 11 }, () => mk(defG, "def"));
+  let selected = null;
+
+  const place = (p, x, y) => {
+    p.x = Math.min(VBW - R, Math.max(R, x));
+    p.y = Math.min(VBH - R, Math.max(R, y));
+    p.g.style.transform = `translate(${p.x}px, ${p.y}px)`;
+  };
+  const describe = p => {
+    const r = ROLES[p.role];
+    $("playerInfo").textContent = `${r.name} · ${r.side}. ${r.desc}`;
+    if (selected) selected.g.classList.remove("sel");
+    selected = p; p.g.classList.add("sel");
+  };
+  const assign = (p, [role, txt, x, y], side) => {
+    p.role = role; p.orig = [x, y];
+    p.g.querySelector("text").textContent = txt;
+    p.g.classList.toggle("qb", role === "QB");
+    p.g.setAttribute("aria-label", `${ROLES[role].name}. Usa las flechas para moverlo.`);
+    place(p, x, y);
+  };
+
+  // arrastre con ratón/dedo
+  const all = [...off, ...def];
+  const toSvg = e => {
+    const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+  };
+  all.forEach(p => {
+    let grab = null;
+    p.g.addEventListener("pointerdown", e => {
+      p.g.setPointerCapture(e.pointerId);
+      const m = toSvg(e);
+      grab = { dx: p.x - m.x, dy: p.y - m.y };
+      p.g.classList.add("dragging");
+      describe(p);
+    });
+    p.g.addEventListener("pointermove", e => {
+      if (!grab) return;
+      const m = toSvg(e);
+      place(p, m.x + grab.dx, m.y + grab.dy);
+    });
+    const end = () => { grab = null; p.g.classList.remove("dragging"); };
+    p.g.addEventListener("pointerup", end);
+    p.g.addEventListener("pointercancel", end);
+    p.g.addEventListener("keydown", e => {
+      const step = e.shiftKey ? 3 : 1;
+      const d = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+      if (d) { e.preventDefault(); place(p, p.x + d[0], p.y + d[1]); describe(p); }
+      else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); describe(p); }
+    });
+  });
+
+  // formación actual
+  let current = "SHOTGUN";
+  const setFormation = key => {
+    current = key;
+    const f = FORMATIONS[key];
+    [...OFF_LINE, ...f.players].forEach((spec, i) => assign(off[i], spec));
+    [...DEF_LINE, ...DEF_BACK[f.def]].forEach((spec, i) => assign(def[i], spec));
+    $("playerInfo").textContent = "Toca a un jugador para saber qué hace.";
+    if (selected) { selected.g.classList.remove("sel"); selected = null; }
+    $("formInfo").replaceChildren(
+      h("h3", {}, f.name),
+      h("p", {}, f.text),
+      h("p", { class: "note" }, `Ataque: 5 linieros, 1 quarterback, ${f.personnel}. Defensa típica contra esta formación: ${f.def === "base" ? "base 4-3 (4 de línea, 3 linebackers)" : "nickel (4 de línea, 2 linebackers y 3 esquineros)"}. La alineación de la defensa es ilustrativa.`)
+    );
+    drawTeam();
+  };
+
+  // controles
+  tabGroup($("formTabs"), FORM_KEYS.map(k => ({ key: k, label: FORMATIONS[k].name })), current, setFormation);
+  $("resetPos").onclick = () => setFormation(current);
+  $("showDef").onchange = e => { defG.style.display = e.target.checked ? "" : "none"; };
+
+  const sel = $("teamSelect");
+  Object.entries(TEAMS).sort((a, b) => a[1].name.localeCompare(b[1].name))
+    .forEach(([abbr, t]) => sel.append(h("option", { value: abbr }, t.name)));
+  sel.value = selectedTeam;
+  sel.onchange = () => setTeam(sel.value);
+  teamListeners.push(() => { sel.value = selectedTeam; drawTeam(); });
+
+  // estadísticas por equipo vs liga
+  const league = {};
+  TEAM_DATA.forEach(r => {
+    const l = league[r.formation] || (league[r.formation] = { plays: 0, ok: 0, total: 0 });
+    l.plays += r.plays; l.ok += r.plays * r.successRate / 100;
+  });
+  const leagueTotal = Object.values(league).reduce((a, l) => a + l.plays, 0);
+
+  function drawTeam() {
+    const team = TEAMS[selectedTeam].name;
+    const rows = TEAM_DATA.filter(r => r.team === selectedTeam).sort((a, b) => b.plays - a.plays);
+    const mine = rows.find(r => r.formation === current);
+    const lg = league[current];
+    const lgShare = 100 * lg.plays / leagueTotal, lgSucc = 100 * lg.ok / lg.plays;
+    const box = $("teamInfo");
+    box.replaceChildren(h("h3", {}, `${team}: ${label(current)}`));
+    if (!mine) {
+      box.append(h("p", {}, `Este equipo no usó esta formación en sus jugadas de pase de estas 8 semanas. En la liga se usó en el ${lgShare.toFixed(1)} % de los casos.`));
+    } else {
+      const few = mine.plays < TEAM_MIN ? ` Son solo ${mine.plays} jugadas, así que el porcentaje de éxito es poco fiable.` : "";
+      box.append(h("p", {},
+        `Usaron la ${label(current)} en el ${mine.share.toFixed(0)} % de sus pases (${mine.plays} jugadas). La liga la usa en el ${lgShare.toFixed(0)} %. ` +
+        `Les resultó exitosa en el ${mine.successRate.toFixed(0)} % de las jugadas (liga: ${lgSucc.toFixed(0)} %), con ${mine.avgYards.toFixed(1)} yardas por jugada.` + few));
+    }
+    const bars = h("div", { class: "bars" }, h("p", { class: "note" }, "Todas sus formaciones (% de sus pases):"));
+    rows.forEach(r => {
+      bars.append(h("div", { class: "row" + (r.formation === current ? " cur" : "") },
+        h("span", {}, label(r.formation)),
+        h("div", { class: "track" }, h("div", { class: "fill", style: `width:${r.share}%` })),
+        h("span", { class: "val" }, r.share.toFixed(0) + " %")));
+    });
+    box.append(bars);
+  }
+
+  setFormation(current);
+  requestAnimationFrame(() => svg.classList.add("ready")); // activa la animación solo después de la carga
+})();
+
+/* ---------- paso 6: formaciones por cuarto ---------- */
+(function step6() {
+  $("min").textContent = MIN_PLAYS;
+  const draw = q => {
+    const rows = FORMATION_DATA.filter(r => r.quarter === q && r.plays >= MIN_PLAYS)
+      .sort((a, b) => b.successRate - a.successRate);
+    const chart = $("chart");
+    chart.replaceChildren();
+    rows.forEach((r, i) => {
+      chart.append(h("div", { class: "crow" + (i === 0 ? " best" : "") },
+        h("div", { class: "name" }, label(r.formation)),
+        h("div", { class: "track", style: "height:22px" }, h("div", { class: "fill", style: `width:${r.successRate}%` })),
+        h("div", { class: "val" }, r.successRate.toFixed(0) + " %"),
+        h("div", { class: "meta" }, `${r.avgYards.toFixed(1)} yardas por jugada · ${r.plays} jugadas · ${r.completionRate.toFixed(0)} % de pases completos`)));
+    });
+    const best = rows[0], worst = rows[rows.length - 1];
+    const most = [...rows].sort((a, b) => b.plays - a.plays)[0];
+    $("talk").textContent =
+      `En el ${q}.º cuarto, la formación más usada es la ${label(most.formation)} (${most.plays} jugadas). ` +
+      (best === most ? "Además, fue" : "La que mejor funcionó fue") +
+      ` la ${label(best.formation)}: ${best.successRate.toFixed(0)} % de jugadas exitosas y ${best.avgYards.toFixed(1)} yardas por jugada. ` +
+      `La que menos rindió fue la ${label(worst.formation)} (${worst.successRate.toFixed(0)} %).`;
+  };
+  tabGroup($("qTabs"), [1, 2, 3, 4].map(q => ({ key: q, label: q + ".º cuarto" })), 1, draw);
+  draw(1);
+})();
+
+/* ---------- hoja de ruta (navegación y progreso) ---------- */
+(function roadmap() {
+  const steps = [...document.querySelectorAll(".step")];
+  const nav = $("nav");
+  const links = steps.map((sec, i) => {
+    const a = h("a", { href: "#" + sec.id }, h("span", { class: "n" }, h("span", {}, String(i + 1))), sec.dataset.title);
+    nav.append(h("li", {}, a));
+    return a;
+  });
+  const seen = new Set();
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const i = steps.indexOf(en.target);
+      steps.forEach((x, k) => x.classList.toggle("visible", k === i));
+      links.forEach((a, k) => {
+        if (k === i) a.setAttribute("aria-current", "step"); else a.removeAttribute("aria-current");
+      });
+      for (let k = 0; k < i; k++) { seen.add(k); links[k].classList.add("done"); }
+      $("bar").style.width = Math.round(100 * (i + 1) / steps.length) + "%";
+      const ol = nav, a = links[i];
+      ol.scrollLeft = a.offsetLeft - ol.clientWidth / 2 + a.offsetWidth / 2;
+    });
+  }, { rootMargin: "-30% 0px -60% 0px" });
+  steps.forEach(x => io.observe(x));
+})();
