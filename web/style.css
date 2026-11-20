@@ -123,6 +123,20 @@ button:disabled { opacity:.4; cursor:not-allowed; }
 #driveField[data-focus="side"] .a-side,#driveField[data-focus="posts"] .a-posts,#driveField[data-focus="terr"] .a-terr { opacity:1; }
 .zones button { padding:6px 10px; font-size:.85rem; }
 .zoneInfo { margin:6px 0 0; }
+/* elegir y confirmar la jugada */
+.picker { margin:12px 0; padding:14px; border:1px solid var(--line); border-radius:12px; background:var(--card); }
+.pickTitle { margin:0 0 9px; font-weight:800; color:var(--navy); }
+.options { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
+.opt { display:flex; flex-direction:column; gap:2px; padding:9px 11px; border:2px solid #d0dae6; background:#edf2f7; color:var(--navy); text-align:left; }
+.opt:hover:not(:disabled) { border-color:#9eb2c9; background:#dfe8f2; }
+.opt small { color:var(--mute); font-size:.78rem; font-weight:500; }
+.opt[aria-pressed="true"] { border-color:var(--gold); background:var(--navy); color:#fff; }
+.opt[aria-pressed="true"] small { color:#d6e2f0; }
+.opt:disabled { opacity:.5; cursor:not-allowed; }
+.pickActions { display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin-top:12px; }
+.primary:disabled { opacity:.45; cursor:not-allowed; }
+.scoreInline { margin-left:auto; color:var(--mute); }
+.scoreInline b { color:var(--navy); font-size:1.4rem; }
 .band { fill:rgba(63,140,255,.4); transition:x .4s,width .4s; }
 .gainLine { stroke:#ffd45d; stroke-width:4; }
 .scrLine { stroke:#6fb1ff; stroke-width:3; stroke-dasharray:6 3; }

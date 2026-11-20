@@ -48,12 +48,22 @@
 
     <div class="widget drive">
       <h3>Prueba los 4 intentos</h3>
-      <p class="note">Tu equipo ataca de izquierda a derecha. <strong>Avanzar yardas</strong> sirve para mantener el balón y acercarte; los <strong>puntos</strong> solo se logran al llegar a la zona de anotación (derecha) o pateando.</p>
+      <p class="note">Tu equipo ataca de izquierda a derecha. En cada intento <strong>elige una jugada y confírmala</strong>. Avanzar yardas te acerca a la meta; los <strong>puntos</strong> llegan al entrar a la zona de anotación (derecha) o pateando.</p>
       <div class="attemptsBox">
         <ol class="attempts" id="attempts" aria-label="Los 4 intentos"></ol>
         <div class="status" id="downStatus" aria-live="polite"></div>
         <div class="gainMeter" aria-hidden="true"><div id="gainFill"></div></div>
         <p class="note" id="gainText"></p>
+      </div>
+      <div class="picker">
+        <p class="pickTitle" id="pickTitle"></p>
+        <div class="options" id="playOptions" role="group" aria-labelledby="pickTitle"></div>
+        <div class="pickActions">
+          <button class="primary" id="confirmPlay" disabled>Confirmar jugada</button>
+          <span class="scoreInline">Marcador: <b id="scoreTotal" aria-live="polite">0</b></span>
+          <button class="ghost" id="scoreReset">Reiniciar</button>
+        </div>
+        <p id="downMsg" class="msg" aria-live="polite"></p>
       </div>
       <svg id="driveField" viewBox="0 0 504 280" role="img" aria-label="Campo de fútbol americano completo con zonas de anotación, líneas de yarda, balón y línea para primer down"></svg>
       <div class="legend">
@@ -63,18 +73,7 @@
       <p class="note">Toca una zona para verla resaltada en el campo:</p>
       <div class="tabs zones" id="zoneTabs" role="group" aria-label="Zonas del campo"></div>
       <p class="widget zoneInfo" id="zoneInfo" aria-live="polite">Toca una zona para saber qué es.</p>
-      <p class="note">1) Avanzar en el campo:</p>
-      <div class="btns" id="downBtns"></div>
-      <p id="downMsg" class="msg" aria-live="polite"></p>
-    </div>
-
-    <div class="widget">
-      <h3>2) Sumar puntos</h3>
-      <p class="note">Los botones se activan solo cuando la situación del campo lo permite.</p>
-      <div class="score" id="scoreTotal" aria-live="polite">0</div>
-      <div class="btns" id="scoreBtns"></div>
-      <p id="scoreMsg" class="msg" aria-live="polite"></p>
-      <button class="ghost" id="scoreReset">Reiniciar marcador</button>
+      <p class="note">Las dos jugadas especiales, el <strong>despeje</strong> (patear el balón lejos) y el <strong>gol de campo</strong> (3 puntos), se usan casi siempre en el 4.º intento. También existe el <em>safety</em>: 2 puntos para la defensa si captura al rival dentro de su propia zona de anotación.</p>
     </div>
   </section>
 

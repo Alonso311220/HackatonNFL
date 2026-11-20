@@ -8,8 +8,21 @@
 </head>
 <body>
 <header class="hero">
-  <h1>NFL para curiosos</h1>
-  <p>Un recorrido de lo más básico a lo más táctico. Al final podrás mover a los jugadores de cada formación y ver cómo la usa tu equipo favorito.</p>
+  <div class="hero-inner">
+    <div class="hero-logo-wrap">
+      <img class="hero-logo" src="Resources/Logos/NFL.gif" alt="Escudo de la National Football League" width="150" height="100">
+    </div>
+    <div class="hero-copy">
+      <span class="eyebrow">GUÍA INTERACTIVA · NFL BIG DATA BOWL</span>
+      <h1>NFL para curiosos</h1>
+      <p>Aprende las reglas, explora las formaciones y usa datos reales para anticipar qué puede pasar en la siguiente jugada.</p>
+    </div>
+    <div class="hero-facts" aria-label="Contenido de la guía">
+      <strong>7</strong>
+      <span>etapas interactivas</span>
+      <small>8,557 jugadas de pase</small>
+    </div>
+  </div>
 </header>
 
 <nav class="roadmap" aria-label="Progreso del recorrido">
@@ -35,12 +48,22 @@
 
     <div class="widget drive">
       <h3>Prueba los 4 intentos</h3>
-      <p class="note">Tu equipo ataca de izquierda a derecha. <strong>Avanzar yardas</strong> sirve para mantener el balón y acercarte; los <strong>puntos</strong> solo se logran al llegar a la zona de anotación (derecha) o pateando.</p>
+      <p class="note">Tu equipo ataca de izquierda a derecha. En cada intento <strong>elige una jugada y confírmala</strong>. Avanzar yardas te acerca a la meta; los <strong>puntos</strong> llegan al entrar a la zona de anotación (derecha) o pateando.</p>
       <div class="attemptsBox">
         <ol class="attempts" id="attempts" aria-label="Los 4 intentos"></ol>
         <div class="status" id="downStatus" aria-live="polite"></div>
         <div class="gainMeter" aria-hidden="true"><div id="gainFill"></div></div>
         <p class="note" id="gainText"></p>
+      </div>
+      <div class="picker">
+        <p class="pickTitle" id="pickTitle"></p>
+        <div class="options" id="playOptions" role="group" aria-labelledby="pickTitle"></div>
+        <div class="pickActions">
+          <button class="primary" id="confirmPlay" disabled>Confirmar jugada</button>
+          <span class="scoreInline">Marcador: <b id="scoreTotal" aria-live="polite">0</b></span>
+          <button class="ghost" id="scoreReset">Reiniciar</button>
+        </div>
+        <p id="downMsg" class="msg" aria-live="polite"></p>
       </div>
       <svg id="driveField" viewBox="0 0 504 280" role="img" aria-label="Campo de fútbol americano completo con zonas de anotación, líneas de yarda, balón y línea para primer down"></svg>
       <div class="legend">
@@ -50,18 +73,7 @@
       <p class="note">Toca una zona para verla resaltada en el campo:</p>
       <div class="tabs zones" id="zoneTabs" role="group" aria-label="Zonas del campo"></div>
       <p class="widget zoneInfo" id="zoneInfo" aria-live="polite">Toca una zona para saber qué es.</p>
-      <p class="note">1) Avanzar en el campo:</p>
-      <div class="btns" id="downBtns"></div>
-      <p id="downMsg" class="msg" aria-live="polite"></p>
-    </div>
-
-    <div class="widget">
-      <h3>2) Sumar puntos</h3>
-      <p class="note">Los botones se activan solo cuando la situación del campo lo permite.</p>
-      <div class="score" id="scoreTotal" aria-live="polite">0</div>
-      <div class="btns" id="scoreBtns"></div>
-      <p id="scoreMsg" class="msg" aria-live="polite"></p>
-      <button class="ghost" id="scoreReset">Reiniciar marcador</button>
+      <p class="note">Las dos jugadas especiales, el <strong>despeje</strong> (patear el balón lejos) y el <strong>gol de campo</strong> (3 puntos), se usan casi siempre en el 4.º intento. También existe el <em>safety</em>: 2 puntos para la defensa si captura al rival dentro de su propia zona de anotación.</p>
     </div>
   </section>
 
@@ -99,9 +111,12 @@
 
     <div class="controls">
       <div class="tabs" id="formTabs" role="group" aria-label="Formación"></div>
-      <label>Equipo
-        <select id="teamSelect"></select>
-      </label>
+      <div class="team-control">
+        <img id="teamSelectLogo" class="team-select-logo" src="Resources/Logos/KC.gif" alt="Logo de Kansas City Chiefs" width="64" height="44">
+        <label>Equipo
+          <select id="teamSelect"></select>
+        </label>
+      </div>
       <label class="check"><input type="checkbox" id="showDef" checked> Mostrar defensa</label>
       <button class="ghost" id="resetPos">Volver a la posición original</button>
     </div>
@@ -161,41 +176,49 @@
   </section>
 </main>
 
-<footer>Datos: NFL Big Data Bowl (plays.csv). Las posiciones del diagrama son ilustrativas, no vienen de los datos de seguimiento.</footer>
+<footer>
+  <img src="Resources/Logos/NFL.gif" alt="" width="54" height="36">
+  <p>Datos: NFL Big Data Bowl (<code>plays.csv</code>). Las posiciones del diagrama son ilustrativas, no provienen de los datos de seguimiento.</p>
+  <p>Logotipos obtenidos de <a href="https://www.sportslogos.net/teams/list_by_league/7/National-Football-League-Logos/NFL-Logos/" target="_blank" rel="noopener noreferrer">SportsLogos.Net</a>. Las marcas pertenecen a la NFL y a sus respectivos equipos.</p>
+</footer>
 
 <script>window.requestAnimationFrame = cb => setTimeout(cb, 0);</script><script src="data.js"></script>
 <script src="model.js"></script>
 <script src="app.js"></script>
-<script>
+<script>(() => {
 const errs = []; window.addEventListener('error', e => errs.push(e.message));
 const out = {};
-const snap = () => ({
-  label: document.querySelector('#roadmapLabel').textContent,
-  done: [...document.querySelectorAll('#nav a')].map(a => a.classList.contains('done') ? 1 : 0).join(''),
-  ball: document.querySelector('#progressBall').style.left
+const q = s => document.querySelector(s);
+const opts = () => [...document.querySelectorAll('#playOptions .opt')];
+const pick = name => { const b = opts().find(o => o.textContent.startsWith(name)); if (!b) throw new Error('no option ' + name); b.click(); return b; };
+const go = name => { pick(name); q('#confirmPlay').click(); };
+const state = () => ({
+  status: q('#downStatus').textContent, title: q('#pickTitle').textContent, score: q('#scoreTotal').textContent,
+  confirmDisabled: q('#confirmPlay').disabled,
+  locked: opts().filter(o => o.disabled).map(o => o.querySelector('strong').textContent),
+  n: opts().length, msg: q('#downMsg').textContent.slice(0, 60)
 });
-const go = id => { document.documentElement.style.scrollBehavior = 'auto';
-  const el = document.getElementById(id); window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 40);
-  out.y = (out.y||[]).concat(Math.round(scrollY)); window.dispatchEvent(new Event('scroll')); };
-setTimeout(() => go('step-4'), 200);
-setTimeout(() => { out.at4 = snap(); go('step-6'); }, 600);
-setTimeout(() => { out.at6 = snap(); go('step-2'); }, 1000);
-setTimeout(() => { out.back2 = snap(); go('step-1'); }, 1400);
-setTimeout(() => { out.back1 = snap(); window.scrollTo(0, document.documentElement.scrollHeight); }, 1800);
-setTimeout(() => { out.end = snap(); go('step-1'); }, 2200);
 setTimeout(() => {
-  out.backFromEnd = snap();
-  const f = document.getElementById('driveField');
-  document.querySelector('#zoneTabs button[data-key=red]').click();
-  out.focus = f.dataset.focus; out.zoneInfo = document.getElementById('zoneInfo').textContent.slice(0, 40);
-  document.querySelectorAll('#downBtns button')[1].click();
-  out.status = document.getElementById('downStatus').textContent;
-  out.attempts = [...document.querySelectorAll('#attempts li')].map(l => l.className || '-').join(',');
-  out.gain = document.getElementById('gainText').textContent;
-  out.zones = document.querySelectorAll('#zoneTabs button').length;
-  out.areas = f.querySelectorAll('.area').length;
+  try {
+    out.start = state();
+    pick('Corrida'); out.pickedEnablesConfirm = !q('#confirmPlay').disabled;
+    q('#confirmPlay').click(); out.afterRun = state();
+    go('Pase incompleto'); go('Pase incompleto'); out.at4far = state();
+    q('#scoreReset').click();
+    go('Pase profundo'); go('Pase profundo');
+    go('Pase incompleto'); go('Pase incompleto'); go('Pase incompleto');
+    out.fgNear = state();
+    go('Gol de campo'); out.afterFG = state();
+    q('#scoreReset').click();
+    go('Pase profundo'); go('Pase profundo'); go('Pase profundo');
+    out.td = state();
+    go('Conversi'); out.afterTwo = state();
+    q('#scoreReset').click();
+    go('Pase incompleto'); go('Pase incompleto'); go('Pase incompleto');
+    go('Despeje'); out.afterPunt = state();
+  } catch (e) { out.crash = String(e) + ' @ ' + String(e.stack || '').slice(0, 300); }
   out.errs = errs;
   document.body.dataset.probe = JSON.stringify(out);
-}, 2700);
-</script></body>
+}, 400);
+})();</script></body>
 </html>

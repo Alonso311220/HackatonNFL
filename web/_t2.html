@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><script>window.__errs=[];window.addEventListener('error',e=>{window.__errs.push(e.message+' L'+e.lineno);document.documentElement.dataset.errs=JSON.stringify(window.__errs);});</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFL para curiosos: del juego a las formaciones</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-logo-wrap">
+      <img class="hero-logo" src="Resources/Logos/NFL.gif" alt="Escudo de la National Football League" width="150" height="100">
+    </div>
+    <div class="hero-copy">
+      <span class="eyebrow">GUÍA INTERACTIVA · NFL BIG DATA BOWL</span>
+      <h1>NFL para curiosos</h1>
+      <p>Aprende las reglas, explora las formaciones y usa datos reales para anticipar qué puede pasar en la siguiente jugada.</p>
+    </div>
+    <div class="hero-facts" aria-label="Contenido de la guía">
+      <strong>7</strong>
+      <span>etapas interactivas</span>
+      <small>8,557 jugadas de pase</small>
+    </div>
+  </div>
+</header>
+
+<nav class="roadmap" aria-label="Progreso del recorrido">
+  <div class="roadmap-inner">
+    <div class="roadmap-status" aria-live="polite">
+      <strong id="roadmapLabel">Etapa 1 · El juego</strong>
+      <span id="roadmapCount">1 de 7</span>
+    </div>
+    <div class="field-progress">
+      <div id="bar" class="field-fill" role="progressbar" aria-label="Progreso del recorrido" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1"></div>
+      <ol id="nav"></ol>
+      <span id="progressBall" class="progress-ball" aria-hidden="true"><i></i></span>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- 1 -->
+  <section id="step-1" class="step" data-title="El juego">
+    <h2><span class="num">1</span> ¿Qué es el juego?</h2>
+    <p>El fútbol americano enfrenta a <strong>dos equipos de 11 jugadores</strong> en el campo. El equipo que ataca (tiene el balón) intenta llevarlo hasta la zona de anotación contraria. El otro equipo defiende e intenta detenerlo.</p>
+    <p>La regla clave: el ataque tiene <strong>4 intentos (downs)</strong> para avanzar <strong>10 yardas</strong>. Si lo logra, recibe otros 4 intentos. Si no, entrega el balón.</p>
+
+    <div class="widget drive">
+      <h3>Prueba los 4 intentos</h3>
+      <p class="note">Tu equipo ataca de izquierda a derecha. En cada intento <strong>elige una jugada y confírmala</strong>. Avanzar yardas te acerca a la meta; los <strong>puntos</strong> llegan al entrar a la zona de anotación (derecha) o pateando.</p>
+      <div class="attemptsBox">
+        <ol class="attempts" id="attempts" aria-label="Los 4 intentos"></ol>
+        <div class="status" id="downStatus" aria-live="polite"></div>
+        <div class="gainMeter" aria-hidden="true"><div id="gainFill"></div></div>
+        <p class="note" id="gainText"></p>
+      </div>
+      <div class="picker">
+        <p class="pickTitle" id="pickTitle"></p>
+        <div class="options" id="playOptions" role="group" aria-labelledby="pickTitle"></div>
+        <div class="pickActions">
+          <button class="primary" id="confirmPlay" disabled>Confirmar jugada</button>
+          <span class="scoreInline">Marcador: <b id="scoreTotal" aria-live="polite">0</b></span>
+          <button class="ghost" id="scoreReset">Reiniciar</button>
+        </div>
+        <p id="downMsg" class="msg" aria-live="polite"></p>
+      </div>
+      <svg id="driveField" viewBox="0 0 504 280" role="img" aria-label="Campo de fútbol americano completo con zonas de anotación, líneas de yarda, balón y línea para primer down"></svg>
+      <div class="legend">
+        <span><i class="dot off"></i> Línea de golpeo (donde empiezas)</span>
+        <span><i class="dot qb"></i> Meta de 10 yardas (primer down)</span>
+      </div>
+      <p class="note">Toca una zona para verla resaltada en el campo:</p>
+      <div class="tabs zones" id="zoneTabs" role="group" aria-label="Zonas del campo"></div>
+      <p class="widget zoneInfo" id="zoneInfo" aria-live="polite">Toca una zona para saber qué es.</p>
+      <p class="note">Las dos jugadas especiales, el <strong>despeje</strong> (patear el balón lejos) y el <strong>gol de campo</strong> (3 puntos), se usan casi siempre en el 4.º intento. También existe el <em>safety</em>: 2 puntos para la defensa si captura al rival dentro de su propia zona de anotación.</p>
+    </div>
+  </section>
+
+  <!-- 2 y 3 -->
+  <section id="step-2" class="step" data-title="Duración">
+    <h2><span class="num">2</span> ¿Cuánto dura y cómo se reparte el tiempo?</h2>
+    <p>Un partido tiene <strong>60 minutos de reloj</strong> divididos en <strong>4 cuartos de 15 minutos</strong>, con un descanso al medio. Pero el reloj se detiene con frecuencia (pase incompleto, salida de la cancha, tiempo fuera), así que un partido real dura <strong>cerca de 3 horas</strong>.</p>
+    <p class="note">Toca cada tramo para ver qué pasa en él.</p>
+    <div class="timeline" id="timeline" role="group" aria-label="Distribución del tiempo"></div>
+    <div class="widget" id="timeInfo" aria-live="polite"></div>
+  </section>
+
+  <!-- 4 -->
+  <section id="step-3" class="step" data-title="Equipos">
+    <h2><span class="num">3</span> ¿Cuántos equipos hay?</h2>
+    <p>La NFL tiene <strong>32 equipos</strong> en dos conferencias, <strong>AFC</strong> y <strong>NFC</strong>, de 16 equipos cada una. Cada conferencia se divide en 4 divisiones (Este, Norte, Sur y Oeste) de 4 equipos. Cada equipo juega <strong>17 partidos</strong> en la temporada regular. Siete equipos de cada conferencia llegan a los playoffs, y los dos campeones de conferencia juegan el Super Bowl.</p>
+    <div class="tabs" id="confTabs" role="group" aria-label="Conferencia"></div>
+    <div class="divisions" id="divisions"></div>
+    <p class="note">Elige un equipo. Lo usaremos en el paso 5 para mostrarte cómo ataca.</p>
+  </section>
+
+  <!-- 5 -->
+  <section id="step-4" class="step" data-title="Jugadores">
+    <h2><span class="num">4</span> ¿Qué hace cada jugador?</h2>
+    <p>Los 11 jugadores en el campo cambian según si el equipo ataca, defiende o patea. Abre cada posición para ver qué hace.</p>
+    <div class="tabs" id="roleTabs" role="group" aria-label="Unidad"></div>
+    <div id="roleList" class="roles"></div>
+  </section>
+
+  <!-- 6 -->
+  <section id="step-5" class="step" data-title="Formaciones">
+    <h2><span class="num">5</span> ¿Qué es una formación?</h2>
+    <p>Antes de cada jugada, el ataque se coloca de una forma concreta: cuántos corredores, cuántos receptores y dónde está el quarterback. Eso es la <strong>formación</strong>. Cambiarla es la manera en que el entrenador le plantea un problema distinto a la defensa.</p>
+    <p>Elige una formación, <strong>arrastra a los jugadores</strong> (o selecciónalos y usa las flechas del teclado) y compara con el equipo que quieras.</p>
+
+    <div class="controls">
+      <div class="tabs" id="formTabs" role="group" aria-label="Formación"></div>
+      <div class="team-control">
+        <img id="teamSelectLogo" class="team-select-logo" src="Resources/Logos/KC.gif" alt="Logo de Kansas City Chiefs" width="64" height="44">
+        <label>Equipo
+          <select id="teamSelect"></select>
+        </label>
+      </div>
+      <label class="check"><input type="checkbox" id="showDef" checked> Mostrar defensa</label>
+      <button class="ghost" id="resetPos">Volver a la posición original</button>
+    </div>
+
+    <div class="lab">
+      <div>
+        <svg id="field" viewBox="0 0 100 56" role="img" aria-label="Campo con jugadores de ataque (azul) y defensa (rojo) que se pueden mover"></svg>
+        <div class="legend">
+          <span><i class="dot off"></i> Ataque</span>
+          <span><i class="dot qb"></i> Quarterback</span>
+          <span><i class="dot def"></i> Defensa</span>
+        </div>
+        <p class="widget playerInfo" id="playerInfo" aria-live="polite">Toca a un jugador para saber qué hace.</p>
+      </div>
+      <div>
+        <div class="widget" id="formInfo"></div>
+        <div class="widget" id="teamInfo"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="step-6" class="step" data-title="Cuartos">
+    <h2><span class="num">6</span> ¿Qué formación funciona mejor en cada cuarto?</h2>
+    <p>Con los datos de jugadas de pase de las semanas 1 a 8 de la temporada 2021, así rindió cada formación según el cuarto.</p>
+    <div class="tabs" id="qTabs" role="group" aria-label="Cuarto"></div>
+    <p class="talk" id="talk"></p>
+    <div id="chart"></div>
+    <p class="note">
+      "Éxito" es el porcentaje de jugadas que avanzaron lo suficiente: al menos el 40 % de las yardas que faltaban en 1.er down, el 60 % en 2.º, y todas en 3.º y 4.º.
+      Solo se muestran formaciones con al menos <span id="min"></span> jugadas en ese cuarto. Se omiten el tiempo extra y las formaciones muy raras (Wildcat).
+      Los datos no indican causa: una formación puede verse mejor porque se usa en situaciones más fáciles.
+    </p>
+  </section>
+
+  <!-- 8 -->
+  <section id="step-7" class="step" data-title="Predictor">
+    <h2><span class="num">7</span> Predictor de jugada: ¿qué formación conviene?</h2>
+    <p>Describe la situación del partido y el modelo estima, para cada formación, qué tan probable es que el ataque <strong>tenga éxito</strong> en un pase. El modelo aprendió de las jugadas de pase reales de las semanas 1 a 8 de 2021.</p>
+    <div class="widget predictor">
+      <div class="pgrid">
+        <div><span class="plabel">Intento (down)</span><div class="tabs" id="pDown" role="group" aria-label="Intento"></div></div>
+        <div><span class="plabel">Cuarto</span><div class="tabs" id="pQ" role="group" aria-label="Cuarto"></div></div>
+        <label>Yardas que faltan para el primer down: <b id="pToGoV"></b>
+          <input type="range" id="pToGo" min="1" max="20" value="7"></label>
+        <label>Posición en el campo: <b id="pGoalV"></b>
+          <input type="range" id="pGoal" min="1" max="99" value="40"></label>
+        <label>Marcador: <b id="pDiffV"></b>
+          <input type="range" id="pDiff" min="-21" max="21" value="-3"></label>
+        <label class="check"><input type="checkbox" id="pLate"> Últimos 2 minutos del 2.º o 4.º cuarto</label>
+      </div>
+    </div>
+    <p class="talk" id="pTalk"></p>
+    <div id="pOut"></div>
+    <div class="widget" id="pNear"></div>
+    <p class="note" id="pNote"></p>
+  </section>
+</main>
+
+<footer>
+  <img src="Resources/Logos/NFL.gif" alt="" width="54" height="36">
+  <p>Datos: NFL Big Data Bowl (<code>plays.csv</code>). Las posiciones del diagrama son ilustrativas, no provienen de los datos de seguimiento.</p>
+  <p>Logotipos obtenidos de <a href="https://www.sportslogos.net/teams/list_by_league/7/National-Football-League-Logos/NFL-Logos/" target="_blank" rel="noopener noreferrer">SportsLogos.Net</a>. Las marcas pertenecen a la NFL y a sus respectivos equipos.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="model.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

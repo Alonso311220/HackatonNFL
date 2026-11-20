@@ -1,0 +1,4 @@
+dom bytes: 61016
+errs: ninguno
+opciones: 7
+titulo: Intento 1 de 4: elige la jugada
