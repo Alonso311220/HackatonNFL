@@ -49,13 +49,16 @@
     <div class="widget drive">
       <h3>Prueba los 4 intentos</h3>
       <p class="note">Tu equipo ataca de izquierda a derecha. <strong>Avanzar yardas</strong> sirve para mantener el balón y acercarte; los <strong>puntos</strong> solo se logran al llegar a la zona de anotación (derecha) o pateando.</p>
-      <div class="attemptsBox">
-        <ol class="attempts" id="attempts" aria-label="Los 4 intentos"></ol>
-        <div class="status" id="downStatus" aria-live="polite"></div>
-        <div class="gainMeter" aria-hidden="true"><div id="gainFill"></div></div>
-        <p class="note" id="gainText"></p>
+      <div class="driveLayout">
+        <svg id="driveField" viewBox="0 0 504 280" role="img" aria-label="Campo de fútbol americano completo con zonas de anotación, líneas de yarda, balón y línea para primer down"></svg>
+        <aside class="attemptsBox" aria-label="Progreso de los intentos">
+          <h4>Intentos</h4>
+          <ol class="attempts" id="attempts" aria-label="Los 4 intentos"></ol>
+          <div class="status" id="downStatus" aria-live="polite"></div>
+          <div class="gainMeter" aria-hidden="true"><div id="gainFill"></div></div>
+          <p class="note" id="gainText"></p>
+        </aside>
       </div>
-      <svg id="driveField" viewBox="0 0 504 280" role="img" aria-label="Campo de fútbol americano completo con zonas de anotación, líneas de yarda, balón y línea para primer down"></svg>
       <div class="legend">
         <span><i class="dot off"></i> Línea de golpeo (donde empiezas)</span>
         <span><i class="dot qb"></i> Meta de 10 yardas (primer down)</span>

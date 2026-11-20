@@ -1,108 +1,108 @@
 
-===== setup 2026-11-20 10:57:41 =====
-10:57:41 Sistema detectado: windows x64  |  Python del arranque: 3.11.4
-10:57:41 MODO: check  |  versión del script: 2026-11-16  |  argumentos: --check
-10:57:41 SISTEMA: Windows-10-10.0.26300-SP0  |  detectado: windows x64  |  versión: 10.0.26300
-10:57:41 WINDOWS: build 26300  |  administrador: False
-10:57:41 PYTHON: 3.11.4 (C:\Users\ivano\AppData\Local\Programs\Python\Python311\python.exe)
-10:57:41 USUARIO: ivano  |  carpeta actual: C:\Users\ivano\Escritorio\HackatonNFL
-10:57:41 PROYECTO: C:\Users\ivano\Escritorio\HackatonNFL  |  largo de ruta: 37  |  espacios: False  |  no ASCII: False
-10:57:41 DISCO LIBRE: 79.2 GB
-10:57:41 PROXY: ninguno
-10:57:41 Proyecto: C:\Users\ivano\Escritorio\HackatonNFL
-10:57:41 
+===== setup 2026-11-20 10:34:04 =====
+10:34:04 Sistema detectado: windows x64  |  Python del arranque: 3.12.10
+10:34:04 MODO: check  |  versión del script: 2026-11-16  |  argumentos: --check
+10:34:04 SISTEMA: Windows-11-10.0.26300-SP0  |  detectado: windows x64  |  versión: 10.0.26300
+10:34:04 WINDOWS: build 26300  |  administrador: False
+10:34:04 PYTHON: 3.12.10 (C:\Users\alons\AppData\Local\Programs\Python\Python312\python.exe)
+10:34:04 USUARIO: alons  |  carpeta actual: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+10:34:04 PROYECTO: C:\Users\alons\OneDrive\Desktop\HackatonNFL  |  largo de ruta: 43  |  espacios: False  |  no ASCII: False
+10:34:04 DISCO LIBRE: 351.6 GB
+10:34:04 PROXY: ninguno
+10:34:04 Proyecto: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+10:34:04 
 Validando (no se descarga ni instala nada)...
-10:57:41   paquete distinto: fastapi falta≠0.115.14
-10:57:41   paquete distinto: uvicorn falta≠0.34.3
-10:57:41   paquete distinto: pydantic falta≠2.11.7
-10:57:41   paquete distinto: pandas falta≠2.2.3
-10:57:41   paquete distinto: numpy falta≠2.1.3
-10:57:41   paquete distinto: strands-agents falta≠1.64.0
-10:57:41   paquete distinto: boto3 falta≠1.44.0
-10:57:41   paquete distinto: pytest falta≠8.3.5
-10:57:41   paquete distinto: httpx falta≠0.28.1
-10:57:41   paquete npm distinto: react falta≠18.3.1
-10:57:41   paquete npm distinto: react-dom falta≠18.3.1
-10:57:41   paquete npm distinto: react-is falta≠18.3.1
-10:57:41   paquete npm distinto: recharts falta≠3.10.1
-10:57:41   paquete npm distinto: @types/react falta≠18.3.31
-10:57:41   paquete npm distinto: @types/react-dom falta≠18.3.7
-10:57:41   paquete npm distinto: @vitejs/plugin-react falta≠4.7.0
-10:57:41   paquete npm distinto: autoprefixer falta≠10.4.21
-10:57:41   paquete npm distinto: postcss falta≠8.5.6
-10:57:41   paquete npm distinto: tailwindcss falta≠3.4.19
-10:57:41   paquete npm distinto: typescript falta≠5.7.3
-10:57:41   paquete npm distinto: vite falta≠5.4.21
-10:57:41   Pieza            Esperado  Encontrado     Estado  
-10:57:41   ---------------  --------  -------------  --------
-10:57:41   uv               0.11.19   no encontrado  FALTA   
-10:57:41   Python (.venv)   3.12.12   no encontrado  FALTA   
-10:57:41   Node             v22.23.1  no encontrado  FALTA   
-10:57:41   npm              10.x      no encontrado  FALTA   
-10:57:41   Paquetes Python  9 fijos   0 coinciden    DISTINTA
-10:57:41   Paquetes npm     12 fijos  0 coinciden    DISTINTA
-10:57:41 
+10:34:04   paquete distinto: fastapi falta≠0.115.14
+10:34:04   paquete distinto: uvicorn falta≠0.34.3
+10:34:04   paquete distinto: pydantic falta≠2.11.7
+10:34:04   paquete distinto: pandas falta≠2.2.3
+10:34:04   paquete distinto: numpy falta≠2.1.3
+10:34:04   paquete distinto: strands-agents falta≠1.64.0
+10:34:04   paquete distinto: boto3 falta≠1.44.0
+10:34:04   paquete distinto: pytest falta≠8.3.5
+10:34:04   paquete distinto: httpx falta≠0.28.1
+10:34:04   paquete npm distinto: react falta≠18.3.1
+10:34:04   paquete npm distinto: react-dom falta≠18.3.1
+10:34:04   paquete npm distinto: react-is falta≠18.3.1
+10:34:04   paquete npm distinto: recharts falta≠3.10.1
+10:34:04   paquete npm distinto: @types/react falta≠18.3.31
+10:34:04   paquete npm distinto: @types/react-dom falta≠18.3.7
+10:34:04   paquete npm distinto: @vitejs/plugin-react falta≠4.7.0
+10:34:04   paquete npm distinto: autoprefixer falta≠10.4.21
+10:34:04   paquete npm distinto: postcss falta≠8.5.6
+10:34:04   paquete npm distinto: tailwindcss falta≠3.4.19
+10:34:04   paquete npm distinto: typescript falta≠5.7.3
+10:34:04   paquete npm distinto: vite falta≠5.4.21
+10:34:04   Pieza            Esperado  Encontrado     Estado  
+10:34:04   ---------------  --------  -------------  --------
+10:34:04   uv               0.11.19   no encontrado  FALTA   
+10:34:04   Python (.venv)   3.12.12   no encontrado  FALTA   
+10:34:04   Node             v22.23.1  no encontrado  FALTA   
+10:34:04   npm              10.x      no encontrado  FALTA   
+10:34:04   Paquetes Python  9 fijos   0 coinciden    DISTINTA
+10:34:04   Paquetes npm     12 fijos  0 coinciden    DISTINTA
+10:34:04 
 Revisando desviaciones del stack...
-10:57:41     El proyecto sigue el stack del evento
-10:57:41 
+10:34:04     El proyecto sigue el stack del evento
+10:34:04 
 RESULTADO: HAY PROBLEMAS. Corre setup sin --check para repararlos y envía setup.log si persisten.
-10:57:41 FIN con código de salida 1
+10:34:04 FIN con código de salida 1
 
-===== setup 2026-11-20 10:57:47 =====
-10:57:47 Sistema detectado: windows x64  |  Python del arranque: 3.11.4
-10:57:47 MODO: instalación  |  versión del script: 2026-11-16  |  argumentos: (ninguno)
-10:57:47 SISTEMA: Windows-10-10.0.26300-SP0  |  detectado: windows x64  |  versión: 10.0.26300
-10:57:47 WINDOWS: build 26300  |  administrador: False
-10:57:47 PYTHON: 3.11.4 (C:\Users\ivano\AppData\Local\Programs\Python\Python311\python.exe)
-10:57:47 USUARIO: ivano  |  carpeta actual: C:\Users\ivano\Escritorio\HackatonNFL
-10:57:47 PROYECTO: C:\Users\ivano\Escritorio\HackatonNFL  |  largo de ruta: 37  |  espacios: False  |  no ASCII: False
-10:57:47 DISCO LIBRE: 79.2 GB
-10:57:47 PROXY: ninguno
-10:57:47 Proyecto: C:\Users\ivano\Escritorio\HackatonNFL
-10:57:47 
+===== setup 2026-11-20 10:34:22 =====
+10:34:22 Sistema detectado: windows x64  |  Python del arranque: 3.12.10
+10:34:22 MODO: instalación  |  versión del script: 2026-11-16  |  argumentos: (ninguno)
+10:34:22 SISTEMA: Windows-11-10.0.26300-SP0  |  detectado: windows x64  |  versión: 10.0.26300
+10:34:22 WINDOWS: build 26300  |  administrador: False
+10:34:22 PYTHON: 3.12.10 (C:\Users\alons\AppData\Local\Programs\Python\Python312\python.exe)
+10:34:22 USUARIO: alons  |  carpeta actual: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+10:34:22 PROYECTO: C:\Users\alons\OneDrive\Desktop\HackatonNFL  |  largo de ruta: 43  |  espacios: False  |  no ASCII: False
+10:34:22 DISCO LIBRE: 351.6 GB
+10:34:22 PROXY: ninguno
+10:34:22 Proyecto: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+10:34:22 
 [1/8] Preparando carpetas
-10:57:47 
+10:34:22 
 [2/8] Instalando uv 0.11.19
-10:57:47 descargando https://astral.sh/uv/0.11.19/install.ps1
-10:57:47 $ powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\.cache\downloads\uv-install.ps1
-10:57:52 downloading uv 0.11.19 (x86_64-pc-windows-msvc)
-installing to C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\.tools\uv
+10:34:22 descargando https://astral.sh/uv/0.11.19/install.ps1
+10:34:23 $ powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.cache\downloads\uv-install.ps1
+10:34:57 downloading uv 0.11.19 (x86_64-pc-windows-msvc)
+installing to C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\uv
   uv.exe
   uvx.exe
   uvw.exe
 everything's installed!
-10:57:52     uv 0.11.19 instalado en .tools/uv
-10:57:52 
+10:35:00     uv 0.11.19 instalado en .tools/uv
+10:35:00 
 [3/8] Instalando Python 3.12.12 y creando .venv
-10:57:52 $ C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\.tools\uv\uv.exe python install 3.12.12 --no-bin --no-registry
-10:57:59 Downloading cpython-3.12.12-windows-x86_64-none (download) (20.8MiB)
+10:35:00 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\uv\uv.exe python install 3.12.12 --no-bin --no-registry
+10:35:19 Downloading cpython-3.12.12-windows-x86_64-none (download) (20.8MiB)
  Downloaded cpython-3.12.12-windows-x86_64-none (download)
-Installed Python 3.12.12 in 7.18s
+Installed Python 3.12.12 in 18.98s
  + cpython-3.12.12-windows-x86_64-none
-10:57:59     Python 3.12.12 disponible en .tools/python
-10:57:59 $ C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\.tools\uv\uv.exe venv --python 3.12.12 C:\Users\ivano\Escritorio\HackatonNFL\.venv
-10:58:00 Using CPython 3.12.12
+10:35:19     Python 3.12.12 disponible en .tools/python
+10:35:19 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\uv\uv.exe venv --python 3.12.12 C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv
+10:35:20 Using CPython 3.12.12
 Creating virtual environment at: .venv
 Activate with: .venv\Scripts\activate
-10:58:00     .venv creado
-10:58:00 
+10:35:20     .venv creado
+10:35:20 
 [4/8] Instalando dependencias de Python (una sola resolución, solo ruedas)
-10:58:00 $ C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\.tools\uv\uv.exe pip install --python C:\Users\ivano\Escritorio\HackatonNFL\.venv\Scripts\python.exe --only-binary :all: --require-hashes -r C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\requirements.lock
-10:58:29 Resolved 57 packages in 5.76s
+10:35:20 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\uv\uv.exe pip install --python C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe --only-binary :all: --require-hashes -r C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\requirements.lock
+10:40:46 Resolved 57 packages in 20.33s
 Downloading botocore (15.5MiB)
-Downloading pandas (11.0MiB)
-Downloading numpy (12.0MiB)
-Downloading pydantic-core (1.9MiB)
 Downloading cryptography (3.6MiB)
 Downloading pywin32 (6.6MiB)
+Downloading numpy (12.0MiB)
+Downloading pandas (11.0MiB)
+Downloading pydantic-core (1.9MiB)
  Downloaded pydantic-core
  Downloaded cryptography
  Downloaded pywin32
  Downloaded pandas
  Downloaded numpy
  Downloaded botocore
-Prepared 57 packages in 19.42s
-Installed 57 packages in 3.80s
+Prepared 57 packages in 5m 02s
+Installed 57 packages in 2.30s
  + annotated-types==0.8.0
  + anyio==4.16.0
  + attrs==26.1.0
@@ -160,77 +160,186 @@ Installed 57 packages in 3.80s
  + uvicorn==0.34.3
  + watchdog==6.0.0
  + wrapt==2.5.2
-10:58:29     Dependencias de Python instaladas desde el archivo de bloqueo
-10:58:29 
+10:40:46     Dependencias de Python instaladas desde el archivo de bloqueo
+10:40:46 
 [5/8] Descargando Node 22.23.1 portátil y verificando SHA-256
-10:58:29 descargando https://nodejs.org/dist/v22.23.1/SHASUMS256.txt
-10:58:30 descargando https://nodejs.org/dist/v22.23.1/node-v22.23.1-win-x64.zip
-10:58:37     Suma SHA-256 verificada
-10:58:40     Node v22.23.1 instalado en .tools/node
-10:58:40 
+10:40:46 descargando https://nodejs.org/dist/v22.23.1/SHASUMS256.txt
+10:40:46 descargando https://nodejs.org/dist/v22.23.1/node-v22.23.1-win-x64.zip
+10:40:57     Suma SHA-256 verificada
+10:41:03     Node v22.23.1 instalado en .tools/node
+10:41:03 
 [6/8] Instalando dependencias del frontend (npm ci)
-10:58:40 $ C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\.tools\node\npm.cmd ci --ignore-scripts
-10:59:29 
-added 173 packages in 46s
-10:59:29     Dependencias del frontend instaladas con npm ci --ignore-scripts
-10:59:29 
+10:41:03 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\node\npm.cmd ci --ignore-scripts
+10:41:17 
+added 173 packages in 14s
+10:41:17     Dependencias del frontend instaladas con npm ci --ignore-scripts
+10:41:17 
 [7/8] Comprobando todo
-10:59:30 $ C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\.tools\uv\uv.exe pip check --python C:\Users\ivano\Escritorio\HackatonNFL\.venv\Scripts\python.exe
-10:59:30 Checked 57 packages in 8ms
+10:41:19 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\uv\uv.exe pip check --python C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe
+10:41:19 Checked 57 packages in 6ms
 All installed packages are compatible
-10:59:30 $ C:\Users\ivano\Escritorio\HackatonNFL\.venv\Scripts\python.exe -c import pandas, numpy, fastapi, uvicorn, pydantic, strands, boto3, httpx
-10:59:38 
-10:59:38   Pieza              Esperado                            Encontrado      Estado
-10:59:38   -----------------  ----------------------------------  --------------  ------
-10:59:38   uv                 0.11.19                             0.11.19         OK    
-10:59:38   Python (.venv)     3.12.12                             3.12.12         OK    
-10:59:38   Node               v22.23.1                            v22.23.1        OK    
-10:59:38   npm                10.x                                10.9.8          OK    
-10:59:38   Paquetes Python    9 fijos                             9 coinciden     OK    
-10:59:38   Paquetes npm       12 fijos                            12 coinciden    OK    
-10:59:38   pip check          sin conflictos                      sin conflictos  OK    
-10:59:38   Importar paquetes  pandas, fastapi, pydantic, strands  importan        OK    
-10:59:38 
+10:41:19 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -c import pandas, numpy, fastapi, uvicorn, pydantic, strands, boto3, httpx
+10:41:27 
+10:41:27   Pieza              Esperado                            Encontrado      Estado
+10:41:27   -----------------  ----------------------------------  --------------  ------
+10:41:27   uv                 0.11.19                             0.11.19         OK    
+10:41:27   Python (.venv)     3.12.12                             3.12.12         OK    
+10:41:27   Node               v22.23.1                            v22.23.1        OK    
+10:41:27   npm                10.x                                10.9.8          OK    
+10:41:27   Paquetes Python    9 fijos                             9 coinciden     OK    
+10:41:27   Paquetes npm       12 fijos                            12 coinciden    OK    
+10:41:27   pip check          sin conflictos                      sin conflictos  OK    
+10:41:27   Importar paquetes  pandas, fastapi, pydantic, strands  importan        OK    
+10:41:27 
 [8/8] Resultado
-10:59:38 
+10:41:27 
 TODO OK. Tu proyecto está en:
-  C:\Users\ivano\Escritorio\HackatonNFL
+  C:\Users\alons\OneDrive\Desktop\HackatonNFL
 Trabaja dentro de esa carpeta. Cuando termines, corre:  .\.hackathon\setup.cmd --entregar
-10:59:38 FIN con código de salida 0
+10:41:27 FIN con código de salida 0
 
-===== setup 2026-11-20 11:09:26 =====
-11:09:26 Sistema detectado: windows x64  |  Python del arranque: 3.12.12
-11:09:26 MODO: check  |  versión del script: 2026-11-16  |  argumentos: --check
-11:09:26 SISTEMA: Windows-11-10.0.26300-SP0  |  detectado: windows x64  |  versión: 10.0.26300
-11:09:26 WINDOWS: build 26300  |  administrador: False
-11:09:26 PYTHON: 3.12.12 (C:\Users\ivano\Escritorio\HackatonNFL\.venv\Scripts\python.exe)
-11:09:26 USUARIO: ivano  |  carpeta actual: C:\Users\ivano\Escritorio\HackatonNFL
-11:09:26 PROYECTO: C:\Users\ivano\Escritorio\HackatonNFL  |  largo de ruta: 37  |  espacios: False  |  no ASCII: False
-11:09:26 DISCO LIBRE: 78.3 GB
-11:09:26 PROXY: ninguno
-11:09:26 Proyecto: C:\Users\ivano\Escritorio\HackatonNFL
-11:09:26 
+===== setup 2026-11-20 10:41:50 =====
+10:41:50 Sistema detectado: windows x64  |  Python del arranque: 3.12.12
+10:41:50 MODO: check  |  versión del script: 2026-11-16  |  argumentos: --check
+10:41:50 SISTEMA: Windows-11-10.0.26300-SP0  |  detectado: windows x64  |  versión: 10.0.26300
+10:41:50 WINDOWS: build 26300  |  administrador: False
+10:41:50 PYTHON: 3.12.12 (C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe)
+10:41:50 USUARIO: alons  |  carpeta actual: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+10:41:50 PROYECTO: C:\Users\alons\OneDrive\Desktop\HackatonNFL  |  largo de ruta: 43  |  espacios: False  |  no ASCII: False
+10:41:50 DISCO LIBRE: 350.9 GB
+10:41:50 PROXY: ninguno
+10:41:50 Proyecto: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+10:41:50 
 Validando (no se descarga ni instala nada)...
-11:09:27 $ C:\Users\ivano\Escritorio\HackatonNFL\.hackathon\.tools\uv\uv.exe pip check --python C:\Users\ivano\Escritorio\HackatonNFL\.venv\Scripts\python.exe
-11:09:27 Checked 57 packages in 4ms
+10:41:51 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\uv\uv.exe pip check --python C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe
+10:41:51 Checked 57 packages in 5ms
 All installed packages are compatible
-11:09:27 $ C:\Users\ivano\Escritorio\HackatonNFL\.venv\Scripts\python.exe -c import pandas, numpy, fastapi, uvicorn, pydantic, strands, boto3, httpx
-11:09:29 
-11:09:29   Pieza              Esperado                            Encontrado      Estado
-11:09:29   -----------------  ----------------------------------  --------------  ------
-11:09:29   uv                 0.11.19                             0.11.19         OK    
-11:09:29   Python (.venv)     3.12.12                             3.12.12         OK    
-11:09:29   Node               v22.23.1                            v22.23.1        OK    
-11:09:29   npm                10.x                                10.9.8          OK    
-11:09:29   Paquetes Python    9 fijos                             9 coinciden     OK    
-11:09:29   Paquetes npm       12 fijos                            12 coinciden    OK    
-11:09:29   pip check          sin conflictos                      sin conflictos  OK    
-11:09:29   Importar paquetes  pandas, fastapi, pydantic, strands  importan        OK    
-11:09:29 
+10:41:51 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -c import pandas, numpy, fastapi, uvicorn, pydantic, strands, boto3, httpx
+10:41:52 
+10:41:52   Pieza              Esperado                            Encontrado      Estado
+10:41:52   -----------------  ----------------------------------  --------------  ------
+10:41:52   uv                 0.11.19                             0.11.19         OK    
+10:41:52   Python (.venv)     3.12.12                             3.12.12         OK    
+10:41:52   Node               v22.23.1                            v22.23.1        OK    
+10:41:52   npm                10.x                                10.9.8          OK    
+10:41:52   Paquetes Python    9 fijos                             9 coinciden     OK    
+10:41:52   Paquetes npm       12 fijos                            12 coinciden    OK    
+10:41:52   pip check          sin conflictos                      sin conflictos  OK    
+10:41:52   Importar paquetes  pandas, fastapi, pydantic, strands  importan        OK    
+10:41:52 
 Revisando desviaciones del stack...
-11:09:29 $ C:\Users\ivano\Escritorio\HackatonNFL\.venv\Scripts\python.exe -c import backend.main as m;assert hasattr(m,'app'), 'APP';assert any(getattr(r,'path','')=='/health' for r in m.app.routes), 'HEALTH'
-11:09:30 
-11:09:30     El proyecto sigue el stack del evento
-11:09:30 
+10:41:53 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -c import backend.main as m;assert hasattr(m,'app'), 'APP';assert any(getattr(r,'path','')=='/health' for r in m.app.routes), 'HEALTH'
+10:41:53 
+10:41:53     El proyecto sigue el stack del evento
+10:41:53 
 RESULTADO: TODO OK, puedes entregar.
-11:09:30 FIN con código de salida 0
+10:41:53 FIN con código de salida 0
+
+===== setup 2026-11-20 10:52:17 =====
+10:52:17 Sistema detectado: windows x64  |  Python del arranque: 3.12.12
+10:52:17 MODO: check  |  versión del script: 2026-11-16  |  argumentos: --check
+10:52:17 SISTEMA: Windows-11-10.0.26300-SP0  |  detectado: windows x64  |  versión: 10.0.26300
+10:52:17 WINDOWS: build 26300  |  administrador: False
+10:52:17 PYTHON: 3.12.12 (C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe)
+10:52:17 USUARIO: alons  |  carpeta actual: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+10:52:17 PROYECTO: C:\Users\alons\OneDrive\Desktop\HackatonNFL  |  largo de ruta: 43  |  espacios: False  |  no ASCII: False
+10:52:17 DISCO LIBRE: 349.7 GB
+10:52:17 PROXY: ninguno
+10:52:17 Proyecto: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+10:52:17 
+Validando (no se descarga ni instala nada)...
+10:52:17 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\uv\uv.exe pip check --python C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe
+10:52:18 Checked 57 packages in 5ms
+All installed packages are compatible
+10:52:18 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -c import pandas, numpy, fastapi, uvicorn, pydantic, strands, boto3, httpx
+10:52:19 
+10:52:19   Pieza              Esperado                            Encontrado      Estado
+10:52:19   -----------------  ----------------------------------  --------------  ------
+10:52:19   uv                 0.11.19                             0.11.19         OK    
+10:52:19   Python (.venv)     3.12.12                             3.12.12         OK    
+10:52:19   Node               v22.23.1                            v22.23.1        OK    
+10:52:19   npm                10.x                                10.9.8          OK    
+10:52:19   Paquetes Python    9 fijos                             9 coinciden     OK    
+10:52:19   Paquetes npm       12 fijos                            12 coinciden    OK    
+10:52:19   pip check          sin conflictos                      sin conflictos  OK    
+10:52:19   Importar paquetes  pandas, fastapi, pydantic, strands  importan        OK    
+10:52:19 
+Revisando desviaciones del stack...
+10:52:19 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -c import backend.main as m;assert hasattr(m,'app'), 'APP';assert any(getattr(r,'path','')=='/health' for r in m.app.routes), 'HEALTH'
+10:52:20 
+10:52:20     El proyecto sigue el stack del evento
+10:52:20 
+RESULTADO: TODO OK, puedes entregar.
+10:52:20 FIN con código de salida 0
+
+===== setup 2026-11-20 12:33:47 =====
+12:33:47 Sistema detectado: windows x64  |  Python del arranque: 3.12.12
+12:33:47 MODO: entregar  |  versión del script: 2026-11-16  |  argumentos: --entregar
+12:33:47 SISTEMA: Windows-11-10.0.26300-SP0  |  detectado: windows x64  |  versión: 10.0.26300
+12:33:47 WINDOWS: build 26300  |  administrador: False
+12:33:47 PYTHON: 3.12.12 (C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe)
+12:33:47 USUARIO: alons  |  carpeta actual: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+12:33:47 PROYECTO: C:\Users\alons\OneDrive\Desktop\HackatonNFL  |  largo de ruta: 43  |  espacios: False  |  no ASCII: False
+12:33:47 DISCO LIBRE: 349.5 GB
+12:33:47 PROXY: ninguno
+12:33:47 Proyecto: C:\Users\alons\OneDrive\Desktop\HackatonNFL
+12:33:47 
+Preparando la entrega...
+12:33:47 
+[1/7] Validando el entorno
+12:33:48 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\uv\uv.exe pip check --python C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe
+12:33:48 Checked 57 packages in 13ms
+All installed packages are compatible
+12:33:48 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -c import pandas, numpy, fastapi, uvicorn, pydantic, strands, boto3, httpx
+12:33:50 
+12:33:50   Pieza              Esperado                            Encontrado      Estado
+12:33:50   -----------------  ----------------------------------  --------------  ------
+12:33:50   uv                 0.11.19                             0.11.19         OK    
+12:33:50   Python (.venv)     3.12.12                             3.12.12         OK    
+12:33:50   Node               v22.23.1                            v22.23.1        OK    
+12:33:50   npm                10.x                                10.9.8          OK    
+12:33:50   Paquetes Python    9 fijos                             9 coinciden     OK    
+12:33:50   Paquetes npm       12 fijos                            12 coinciden    OK    
+12:33:50   pip check          sin conflictos                      sin conflictos  OK    
+12:33:50   Importar paquetes  pandas, fastapi, pydantic, strands  importan        OK    
+12:33:50 
+[2/7] Revisando el README y el stack
+12:33:50     AVISO: README.md no tiene ninguna imagen; los jueces piden un visual bien formateado
+12:33:50 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -c import backend.main as m;assert hasattr(m,'app'), 'APP';assert any(getattr(r,'path','')=='/health' for r in m.app.routes), 'HEALTH'
+12:33:51 
+12:33:51     El proyecto sigue el stack del evento
+12:33:51     Rutas del dashboard OK (ninguna empieza con '/')
+12:33:51 
+[3/7] Compilando el dashboard (vite build)
+12:33:51 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\node\node.exe C:\Users\alons\OneDrive\Desktop\HackatonNFL\dashboard\node_modules\vite\bin\vite.js build
+12:33:57 [36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32mâœ“[39m 418 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                 [39m[1m[2m  0.38 kB[22m[1m[22m[2m â”‚ gzip:   0.28 kB[22m
+[2mdist/[22m[35massets/index-BNn6Feof.css  [39m[1m[2m  4.94 kB[22m[1m[22m[2m â”‚ gzip:   1.47 kB[22m
+[2mdist/[22m[36massets/index-CFHptQ_M.js   [39m[1m[2m463.55 kB[22m[1m[22m[2m â”‚ gzip: 141.78 kB[22m
+[32mâœ“ built in 3.57s[39m
+12:33:57     Dashboard compilado en dashboard/dist
+12:33:57 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.hackathon\.tools\node\node.exe C:\Users\alons\OneDrive\Desktop\HackatonNFL\dashboard\node_modules\typescript\bin\tsc --noEmit -p C:\Users\alons\OneDrive\Desktop\HackatonNFL\dashboard
+12:33:59 
+12:33:59 
+[4/7] Comprobando el backend (sintaxis e importación)
+12:33:59 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -m compileall -q backend
+12:33:59 
+12:33:59 $ C:\Users\alons\OneDrive\Desktop\HackatonNFL\.venv\Scripts\python.exe -c import backend.main
+12:34:00 
+12:34:00     Backend OK (backend.main se importa sin errores)
+12:34:00 
+[5/7] Buscando llaves y credenciales en tus archivos
+12:34:00     Sin credenciales a la vista
+12:34:00 
+[6/7] Empaquetando
+12:34:50 
+[7/7] Verificando el .zip
+12:34:53     203 archivos, 172.3 MB
+12:34:53 
+LISTO. Sube este archivo:
+  C:\Users\alons\OneDrive\Desktop\entrega-HackatonNFL-20261120-1233.zip
+12:34:53 FIN con código de salida 0
