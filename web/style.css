@@ -231,7 +231,93 @@ select { padding:6px 30px 6px 8px; border:0; background:#fff; color:var(--navy-d
 #pOut .crow .fill { background:var(--blue); }
 #pOut .crow.best .fill { background:var(--green); }
 
+/* paso 7: simulador de jugada */
+.matchup { display:grid; grid-template-columns:1fr auto 1fr; align-items:stretch; gap:12px; margin:14px 0; }
+.team-card { position:relative; padding:14px 16px; border:1px solid var(--line); border-radius:14px; background:#fff; box-shadow:0 4px 14px rgba(9,35,67,.05); }
+.team-card.off { border-top:4px solid var(--blue); }
+.team-card.def { border-top:4px solid var(--red); }
+.role-tag { position:absolute; top:-1px; right:12px; padding:2px 10px; border-radius:0 0 8px 8px; background:var(--navy); color:#fff; font-size:.7rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+.team-card.def .role-tag { background:var(--red); }
+.team-head { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.team-head label { display:flex; flex-direction:column; flex:1; gap:2px; color:var(--mute); font-size:.7rem; font-weight:750; letter-spacing:.06em; text-transform:uppercase; }
+.team-head select { width:100%; padding:7px 8px; border:1px solid var(--line); border-radius:8px; }
+.sim-logo { flex:none; width:72px; height:48px; object-fit:contain; }
+.vs { align-self:center; padding:8px 11px; border-radius:50%; background:var(--navy); color:#fff; font-weight:900; font-size:.85rem; }
+.team-stats .stat { padding:3px 0; border-bottom:1px dashed var(--line); font-size:.86rem; }
+.cmp { font-variant-numeric:tabular-nums; font-weight:700; }
+.cmp.up { color:var(--green); } .cmp.down { color:var(--accent); } .cmp.eq { color:var(--mute); }
+.covbars { margin-top:8px; font-size:.84rem; }
+.covrow { display:grid; grid-template-columns:78px 1fr 44px; align-items:center; gap:8px; margin:4px 0; }
+.sim-situation { margin-top:6px; }
+.sim-actions { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0; }
+button.primary { padding:12px 22px; border-color:var(--accent); background:var(--accent); font-size:1.02rem; font-weight:800; }
+button.primary:hover:not(:disabled) { border-color:#9b0c23; background:#a50d26; }
+.sim-stage { margin:6px 0 16px; padding:12px; border:1px solid var(--line); border-radius:16px; background:#fff; box-shadow:var(--shadow); }
+.sim-hud { margin-bottom:8px; color:var(--navy-dark); font-size:1rem; font-weight:800; }
+#simField { display:block; width:100%; height:auto; border:1px solid #c5d1df; border-radius:12px; background:#155f36; }
+.sim-bar { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:10px 0 4px; }
+.sim-bar input[type="range"] { flex:1; min-width:140px; accent-color:var(--accent); }
+.sim-bar label { display:flex; align-items:center; gap:6px; color:var(--mute); font-size:.85rem; }
+.simlegend .lg { display:inline-block; width:18px; height:10px; margin-right:5px; vertical-align:-1px; border-radius:3px; }
+.lg.zone { background:rgba(213,10,10,.25); border:1px dashed var(--red); }
+.lg.manl { height:0; border-top:2px dashed #ff9aa2; border-radius:0; }
+.lg.route { height:0; border-top:3px solid rgba(255,255,255,.7); background:none; box-shadow:0 0 0 1px #0d3d22; }
+.sim-caption { min-height:3.2em; margin:8px 0; padding:10px 14px; border-left:4px solid var(--navy); border-radius:0 8px 8px 0; background:#eef4fb; color:var(--navy-dark); font-weight:600; }
+.sim-result { padding:14px 16px; border:1px solid var(--line); border-radius:12px; background:#f7f9fc; }
+.sim-result.good { border-color:#8ad1aa; background:#edf9f2; }
+.sim-result.bad { border-color:#f0a6ad; background:#fff2f3; }
+.sim-result h3 { margin-bottom:4px; color:var(--navy-dark); }
+.sim-result .next { font-weight:700; color:var(--navy); }
+.sim-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:14px; margin-top:6px; }
+.sim-grid .widget { margin-top:6px; }
+.bigstat { display:flex; gap:22px; margin-bottom:8px; }
+.bigstat > div { display:flex; flex-direction:column; }
+.bigstat .big { color:var(--navy); font-size:2.3rem; font-weight:900; line-height:1; }
+.bigstat small { color:var(--mute); font-size:.78rem; }
+.crow.slim { grid-template-columns:100px 1fr 58px; margin:6px 0; }
+.crow.slim .fill { background:var(--blue); }
+.crow.slim.bad .fill { background:var(--accent); }
+#simCompare .crow.sel .name { color:var(--accent); }
+#simCompare .crow.best .fill { background:var(--green); }
+.note.small { margin-bottom:2px; }
+/* campo animado */
+.sf-out { fill:#0e3d24; }
+.sf-grass { fill:#1d6b3a; }
+.sf-stripe { fill:#1a6235; }
+.sf-ez.own { fill:#24508f; }
+.sf-ez.rival { fill:#8a3a2f; }
+.sf-ezt { fill:#fff; fill-opacity:.8; font-size:18px; font-weight:800; letter-spacing:2px; text-anchor:middle; dominant-baseline:central; }
+.sf-l5 { stroke:#fff; stroke-opacity:.45; stroke-width:1; }
+.sf-l10 { stroke:#fff; stroke-opacity:.8; stroke-width:1.5; }
+.sf-goal { stroke:#fff; stroke-width:3; }
+.sf-side { stroke:#fff; stroke-width:4; }
+.sf-hash { stroke:#fff; stroke-opacity:.6; stroke-width:1; }
+.sf-num { fill:#fff; fill-opacity:.55; font-size:22px; font-weight:800; text-anchor:middle; dominant-baseline:central; }
+.sim-los { stroke:#6fb1ff; stroke-width:3; stroke-dasharray:7 4; }
+.sim-fd { stroke:#ffd45d; stroke-width:4; }
+.sim-lbl { stroke:#000; stroke-width:3px; paint-order:stroke; font-size:12px; font-weight:800; text-anchor:middle; }
+.sim-lbl.los { fill:#9fd0ff; } .sim-lbl.fd { fill:#ffd45d; }
+.sim-gain { fill:rgba(63,140,255,.32); }
+.sim-spot { stroke:#fff; stroke-width:3; }
+.sim-spott { fill:#fff; stroke:#000; stroke-width:3px; paint-order:stroke; font-size:20px; font-weight:900; }
+.sim-zone { fill:rgba(213,10,10,.14); stroke:rgba(255,120,120,.75); stroke-width:1.5; stroke-dasharray:5 4; }
+.sim-man { stroke:#ff9aa2; stroke-width:1.5; stroke-dasharray:4 3; }
+.sim-route { fill:none; stroke:rgba(255,255,255,.55); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.sim-route.tgt { stroke:#ffd45d; stroke-width:3.2; }
+.simp circle { stroke:#fff; stroke-width:1.2; }
+.simp.off circle { fill:var(--blue); }
+.simp.off.ol circle { fill:#0d4a99; }
+.simp.off.qb circle { fill:var(--gold); }
+.simp.def circle { fill:var(--red); }
+.simp text { fill:#fff; font-size:8.5px; font-weight:800; text-anchor:middle; dominant-baseline:central; pointer-events:none; }
+.simp.qb text { fill:#111; }
+.sim-ball ellipse { fill:#8b4a1f; stroke:#fff; stroke-width:1.4; }
+.sim-shadow { fill:#000; }
+
 @media (max-width:780px) {
+  .matchup { grid-template-columns:1fr; }
+  .vs { justify-self:center; }
+  .sim-grid { grid-template-columns:1fr; }
   html { scroll-padding-top:105px; }
   .hero-inner { grid-template-columns:82px 1fr; gap:18px; min-height:auto; padding:24px 0; }
   .hero-logo-wrap { width:80px; height:80px; border-radius:20px; }

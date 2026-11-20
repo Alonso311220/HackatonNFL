@@ -156,26 +156,72 @@
   </section>
 
   <!-- 8 -->
-  <section id="step-7" class="step" data-title="Predictor">
-    <h2><span class="num">7</span> Predictor de jugada: ¿qué formación conviene?</h2>
-    <p>Describe la situación del partido y el modelo estima, para cada formación, qué tan probable es que el ataque <strong>tenga éxito</strong> en un pase. El modelo aprendió de las jugadas de pase reales de las semanas 1 a 8 de 2021.</p>
-    <div class="widget predictor">
-      <div class="pgrid">
-        <div><span class="plabel">Intento (down)</span><div class="tabs" id="pDown" role="group" aria-label="Intento"></div></div>
-        <div><span class="plabel">Cuarto</span><div class="tabs" id="pQ" role="group" aria-label="Cuarto"></div></div>
-        <label>Yardas que faltan para el primer down: <b id="pToGoV"></b>
-          <input type="range" id="pToGo" min="1" max="20" value="7"></label>
-        <label>Posición en el campo: <b id="pGoalV"></b>
-          <input type="range" id="pGoal" min="1" max="99" value="40"></label>
-        <label>Marcador: <b id="pDiffV"></b>
-          <input type="range" id="pDiff" min="-21" max="21" value="-3"></label>
-        <label class="check"><input type="checkbox" id="pLate"> Últimos 2 minutos del 2.º o 4.º cuarto</label>
+  <section id="step-7" class="step" data-title="Simulador">
+    <h2><span class="num">7</span> Simulador de jugada: predice y mira cómo se desarrolla</h2>
+    <p>Elige quién ataca y quién defiende, la formación, el intento, el cuarto y las yardas. El modelo estima qué puede pasar usando las estadísticas reales de cada equipo (semanas 1 a 8 de 2021) y, al ejecutar la jugada, <strong>sortea un resultado</strong> según esas probabilidades y lo anima paso a paso: alineación, snap, rutas, presión, cobertura y tackle.</p>
+
+    <div class="matchup">
+      <div class="team-card off">
+        <span class="role-tag">Ataca</span>
+        <div class="team-head"><img id="simOffLogo" class="sim-logo" src="Resources/Logos/KC.gif" alt="" width="72" height="48"><label>Equipo atacante<select id="simOff"></select></label></div>
+        <div id="simOffStats" class="team-stats"></div>
+      </div>
+      <div class="vs" aria-hidden="true">VS</div>
+      <div class="team-card def">
+        <span class="role-tag">Defiende</span>
+        <div class="team-head"><img id="simDefLogo" class="sim-logo" src="Resources/Logos/BUF.gif" alt="" width="72" height="48"><label>Equipo defensor<select id="simDef"></select></label></div>
+        <div id="simDefStats" class="team-stats"></div>
       </div>
     </div>
-    <p class="talk" id="pTalk"></p>
-    <div id="pOut"></div>
-    <div class="widget" id="pNear"></div>
-    <p class="note" id="pNote"></p>
+
+    <div class="widget sim-situation">
+      <h3>Situación de la jugada</h3>
+      <div class="pgrid">
+        <div><span class="plabel">Formación del ataque</span><div class="tabs" id="simForm" role="group" aria-label="Formación"></div></div>
+        <div><span class="plabel">Tipo de pase</span><div class="tabs" id="simType" role="group" aria-label="Tipo de pase"></div></div>
+        <div><span class="plabel">Intento (down)</span><div class="tabs" id="simDown" role="group" aria-label="Intento"></div></div>
+        <div><span class="plabel">Cuarto</span><div class="tabs" id="simQ" role="group" aria-label="Cuarto"></div></div>
+        <label>Yardas que faltan para el primer down: <b id="simToGoV"></b>
+          <input type="range" id="simToGo" min="1" max="20" value="10"></label>
+        <label>Posición en el campo: <b id="simGoalV"></b>
+          <input type="range" id="simGoal" min="1" max="99" value="75"></label>
+        <label>Marcador: <b id="simDiffV"></b>
+          <input type="range" id="simDiff" min="-21" max="21" value="0"></label>
+        <label class="check"><input type="checkbox" id="simLate"> Últimos 2 minutos del 2.º o 4.º cuarto</label>
+      </div>
+    </div>
+
+    <div class="sim-actions">
+      <button id="simRun" class="primary">▶ Ejecutar jugada</button>
+      <button id="simBatchBtn" class="ghost">Simular 300 jugadas</button>
+    </div>
+
+    <div class="sim-stage" id="simStage">
+      <div class="sim-hud" id="simHud" aria-live="polite"></div>
+      <svg id="simField" role="img" aria-label="Animación de la jugada vista desde arriba: el ataque avanza de izquierda a derecha"></svg>
+      <div class="sim-bar">
+        <button id="simPlay" class="ghost">▶ Reproducir</button>
+        <input type="range" id="simScrub" min="0" max="1000" value="0" step="10" aria-label="Línea de tiempo de la jugada" disabled>
+        <label>Velocidad
+          <select id="simSpeed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select>
+        </label>
+        <label class="check"><input type="checkbox" id="simShowCov" checked> Mostrar cobertura</label>
+      </div>
+      <div class="legend simlegend">
+        <span><i class="dot off"></i> Ataque</span><span><i class="dot qb"></i> Quarterback</span><span><i class="dot def"></i> Defensa</span>
+        <span><i class="lg zone"></i> Zona que cuida un defensor</span><span><i class="lg manl"></i> Marca hombre a hombre</span><span><i class="lg route"></i> Ruta del receptor (dorada = a quien le lanzan)</span>
+      </div>
+      <p class="sim-caption" id="simCaption" aria-live="polite"></p>
+      <div id="simResult" class="sim-result" aria-live="polite" hidden></div>
+    </div>
+
+    <div class="sim-grid">
+      <div class="widget" id="simPredBox"><h3>Antes del snap: ¿qué espera el modelo?</h3><div id="simPred"></div></div>
+      <div class="widget" id="simCompare"></div>
+    </div>
+    <div class="widget" id="simNear"></div>
+    <div class="widget" id="simBatch" hidden></div>
+    <p class="note" id="simNote"></p>
   </section>
 </main>
 
@@ -188,5 +234,6 @@
 <script src="data.js"></script>
 <script src="model.js"></script>
 <script src="app.js"></script>
+<script src="play.js"></script>
 </body>
 </html>
