@@ -91,6 +91,17 @@ const DEF_BACK = {
 };
 const FORM_KEYS = Object.keys(FORMATIONS);
 const TEAM_MIN = 20;
+const PNG_LOGOS = new Set(["DET", "LA", "SF", "TEN"]);
+const logoSrc = abbr => `Resources/Logos/${abbr}.${PNG_LOGOS.has(abbr) ? "png" : "gif"}`;
+const teamLogo = (abbr, cls = "team-logo") => h("img", {
+  class: cls,
+  src: logoSrc(abbr),
+  alt: "",
+  loading: "lazy",
+  decoding: "async",
+  width: "50",
+  height: "37",
+});
 const label = f => (FORMATIONS[f] || { name: f }).name;
 
 /* ---------- estado compartido ---------- */
@@ -236,7 +247,8 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
     ["Este", "Norte", "Sur", "Oeste"].forEach(div => {
       const col = h("div", { class: "division" }, h("h3", {}, `${conf} ${div}`));
       Object.entries(TEAMS).filter(([, t]) => t.conf === conf && t.div === div).forEach(([abbr, t]) => {
-        col.append(h("button", { class: "chip", "aria-pressed": String(abbr === selectedTeam), onclick: () => setTeam(abbr) }, t.name));
+        col.append(h("button", { class: "chip", "aria-pressed": String(abbr === selectedTeam), onclick: () => setTeam(abbr) },
+          teamLogo(abbr), h("span", {}, t.name)));
       });
       box.append(col);
     });
@@ -368,11 +380,17 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
   $("showDef").onchange = e => { defG.style.display = e.target.checked ? "" : "none"; };
 
   const sel = $("teamSelect");
+  const pickerLogo = $("teamSelectLogo");
+  const updatePickerLogo = () => {
+    pickerLogo.src = logoSrc(selectedTeam);
+    pickerLogo.alt = `Logo de ${TEAMS[selectedTeam].name}`;
+  };
   Object.entries(TEAMS).sort((a, b) => a[1].name.localeCompare(b[1].name))
     .forEach(([abbr, t]) => sel.append(h("option", { value: abbr }, t.name)));
   sel.value = selectedTeam;
+  updatePickerLogo();
   sel.onchange = () => setTeam(sel.value);
-  teamListeners.push(() => { sel.value = selectedTeam; drawTeam(); });
+  teamListeners.push(() => { sel.value = selectedTeam; updatePickerLogo(); drawTeam(); });
 
   // estadísticas por equipo vs liga
   const league = {};
@@ -389,7 +407,9 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
     const lg = league[current];
     const lgShare = 100 * lg.plays / leagueTotal, lgSucc = 100 * lg.ok / lg.plays;
     const box = $("teamInfo");
-    box.replaceChildren(h("h3", {}, `${team}: ${label(current)}`));
+    box.replaceChildren(h("div", { class: "team-heading" },
+      teamLogo(selectedTeam, "team-info-logo"),
+      h("h3", {}, `${team}: ${label(current)}`)));
     if (!mine) {
       box.append(h("p", {}, `Este equipo no usó esta formación en sus jugadas de pase de estas 8 semanas. En la liga se usó en el ${lgShare.toFixed(1)} % de los casos.`));
     } else {

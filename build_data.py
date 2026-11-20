@@ -24,7 +24,7 @@ TEAMS = {
     "DEN": ("Denver Broncos", "AFC", "Oeste"), "KC": ("Kansas City Chiefs", "AFC", "Oeste"),
     "LV": ("Las Vegas Raiders", "AFC", "Oeste"), "LAC": ("Los Angeles Chargers", "AFC", "Oeste"),
     "DAL": ("Dallas Cowboys", "NFC", "Este"), "NYG": ("New York Giants", "NFC", "Este"),
-    "PHI": ("Philadelphia Eagles", "NFC", "Este"), "WAS": ("Washington Football Team", "NFC", "Este"),
+    "PHI": ("Philadelphia Eagles", "NFC", "Este"), "WAS": ("Washington Commanders", "NFC", "Este"),
     "CHI": ("Chicago Bears", "NFC", "Norte"), "DET": ("Detroit Lions", "NFC", "Norte"),
     "GB": ("Green Bay Packers", "NFC", "Norte"), "MIN": ("Minnesota Vikings", "NFC", "Norte"),
     "ATL": ("Atlanta Falcons", "NFC", "Sur"), "CAR": ("Carolina Panthers", "NFC", "Sur"),
