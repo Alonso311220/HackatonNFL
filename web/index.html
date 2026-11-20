@@ -36,19 +36,20 @@
     <div class="widget drive">
       <h3>Prueba los 4 intentos</h3>
       <p class="note">Tu equipo ataca de izquierda a derecha. <strong>Avanzar yardas</strong> sirve para mantener el balón y acercarte; los <strong>puntos</strong> solo se logran al llegar a la zona de anotación (derecha) o pateando.</p>
-      <div class="driveTop">
-        <svg id="downRing" viewBox="0 0 120 120" role="img" aria-label="Anillo de los 4 intentos"></svg>
-        <div>
-          <div class="status" id="downStatus" aria-live="polite"></div>
-          <p class="note ringKey"><i class="k k1"></i> yardas del intento (anillo interior) · <i class="k k2"></i> intento actual (anillo exterior)</p>
-        </div>
+      <div class="attemptsBox">
+        <ol class="attempts" id="attempts" aria-label="Los 4 intentos"></ol>
+        <div class="status" id="downStatus" aria-live="polite"></div>
+        <div class="gainMeter" aria-hidden="true"><div id="gainFill"></div></div>
+        <p class="note" id="gainText"></p>
       </div>
-      <svg id="driveField" viewBox="0 0 450 315" role="img" aria-label="Campo de fútbol americano con el balón y la línea para primer down"></svg>
+      <svg id="driveField" viewBox="0 0 504 280" role="img" aria-label="Campo de fútbol americano completo con zonas de anotación, líneas de yarda, balón y línea para primer down"></svg>
       <div class="legend">
-        <span><i class="dot off"></i> Dónde estás (línea de golpeo)</span>
+        <span><i class="dot off"></i> Línea de golpeo (donde empiezas)</span>
         <span><i class="dot qb"></i> Meta de 10 yardas (primer down)</span>
-        <span><i class="dot zone"></i> Zona de anotación</span>
       </div>
+      <p class="note">Toca una zona para verla resaltada en el campo:</p>
+      <div class="tabs zones" id="zoneTabs" role="group" aria-label="Zonas del campo"></div>
+      <p class="widget zoneInfo" id="zoneInfo" aria-live="polite">Toca una zona para saber qué es.</p>
       <p class="note">1) Avanzar en el campo:</p>
       <div class="btns" id="downBtns"></div>
       <p id="downMsg" class="msg" aria-live="polite"></p>

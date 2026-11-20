@@ -8,16 +8,17 @@ Abre `web/index.html` con doble clic. No necesita servidor ni internet.
 
 ## Qué ofrece
 
-La página es un recorrido de 6 pasos. Una barra fija arriba muestra el avance.
+La página es un recorrido de 7 etapas. Una barra fija arriba, con forma de campo, muestra el avance: un balón se mueve de etapa en etapa y marca en verde las que ya pasaste. Si regresas a una etapa anterior, las posteriores se desmarcan.
 
 | Paso | Contenido | Interacción |
 |---|---|---|
-| 1. El juego | Objetivo, 4 intentos para ganar 10 yardas, puntos | Simulador de intentos y marcador |
+| 1. El juego | Objetivo, 4 intentos para ganar 10 yardas, puntos | Simulador de intentos y marcador sobre un campo completo. Cada zona del campo (zonas de anotación, líneas de yarda, zona roja, postes, etc.) se resalta y se explica al tocarla |
 | 2. Duración | 4 cuartos de 15 min, descanso, tiempo extra | Línea de tiempo con tramos clicables |
 | 3. Equipos | 32 equipos, 2 conferencias, 4 divisiones | Filtro AFC/NFC y selección de equipo |
 | 4. Jugadores | Rol de cada posición en ataque, defensa y equipos especiales | Tarjetas desplegables |
 | 5. Formaciones | 6 formaciones: Shotgun, Empty, Singleback, I-Form, Pistol, Jumbo | Cancha con jugadores que se arrastran, y estadísticas del equipo elegido frente a la liga |
 | 6. Por cuarto | Qué formación funcionó mejor en cada cuarto | Pestañas por cuarto y frase lista para la charla |
+| 7. Predictor | Qué formación conviene según la situación del juego | Controles de intento, cuarto, yardas y marcador |
 
 ## Datos
 
