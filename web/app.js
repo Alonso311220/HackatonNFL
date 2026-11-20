@@ -111,58 +111,117 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
 
 /* ---------- paso 1: downs y puntos ---------- */
 (function steps1() {
-  // Geometría de Campo.webp (450x315): la cancha de juego va de x=72 (propia goal line) a x=378 (goal line rival).
-  const X0 = 72, PX = (378 - 72) / 100, YT = 70, YB = 225, YM = (YT + YB) / 2;
+  // Campo propio (viewBox 504x280): 10 yd de zona de anotación + 100 yd de juego + 10 yd de zona de anotación.
+  // 4.2 px por yarda; la cancha mide 53.3 yd de ancho (224 px).
+  const PX = 4.2, EZ = 10 * PX, X0 = EZ, XR = X0 + 100 * PX, W = XR + EZ;
+  const YT = 28, YB = 252, YM = (YT + YB) / 2;
   const xAt = yd => X0 + yd * PX;              // yd: 0 = propia línea de gol, 100 = línea de gol rival
   const START = 25;
   const state = { ball: START, start: START, down: 1, phase: "drive", extraDone: false };
   const toGo = () => Math.max(0, Math.min(100, state.start + 10) - state.ball);
 
-  /* anillo */
-  const ring = $("downRing");
-  const seg = (i, cls) => s("circle", { cx: 60, cy: 60, r: 50, fill: "none", "stroke-width": 11, pathLength: 100,
-    "stroke-dasharray": "22 78", transform: `rotate(${-90 + i * 90 + 1.5} 60 60)`, class: "seg " + cls });
-  const drawRing = () => {
-    ring.replaceChildren();
+  /* intentos: cuatro casillas simples + barra de yardas */
+  const attempts = $("attempts");
+  const drawAttempts = () => {
+    attempts.replaceChildren();
     for (let i = 1; i <= 4; i++) {
-      const cls = state.phase !== "drive" ? "done" : i < state.down ? "done" : i === state.down ? "cur" : "";
-      ring.append(seg(i - 1, cls));
-      const a = (-45 + (i - 1) * 90) * Math.PI / 180;
-      const t = s("text", { x: 60 + 50 * Math.cos(a), y: 60 + 50 * Math.sin(a), class: "segN" });
-      t.textContent = i; ring.append(t);
+      const cls = state.phase !== "drive" ? "used" : i < state.down ? "used" : i === state.down ? "cur" : "";
+      attempts.append(h("li", { class: cls, ...(i === state.down && state.phase === "drive" ? { "aria-current": "step" } : {}) }, `${i}.º`));
     }
     const gained = Math.max(0, Math.min(10, state.ball - state.start));
-    ring.append(s("circle", { cx: 60, cy: 60, r: 38, fill: "none", "stroke-width": 5, class: "inTrack" }));
-    ring.append(s("circle", { cx: 60, cy: 60, r: 38, fill: "none", "stroke-width": 5, pathLength: 100, class: "inFill",
-      "stroke-dasharray": `${gained * 10} ${100 - gained * 10}`, transform: "rotate(-90 60 60)" }));
-    const c1 = s("text", { x: 60, y: 58, class: "cBig" }); c1.textContent = state.phase === "drive" ? `${state.down}º` : "✔";
-    const c2 = s("text", { x: 60, y: 73, class: "cSmall" }); c2.textContent = state.phase === "drive" ? `faltan ${toGo()} yd` : "¡Llegaste!";
-    ring.append(c1, c2);
+    $("gainFill").style.width = (state.phase === "drive" ? gained * 10 : 100) + "%";
+    $("gainText").textContent = state.phase === "drive"
+      ? `Llevas ${gained} de 10 yardas para el primer down.` : "Llegaste a la zona de anotación.";
   };
 
-  /* campo */
+  /* campo: zona de anotación, líneas, números, marcas, postes y áreas explicables */
   const fld = $("driveField");
-  fld.append(s("image", { href: "Resources/Imagenes/Campo.webp", x: 0, y: 0, width: 450, height: 315, preserveAspectRatio: "none" }));
-  const zone = s("rect", { x: 378, y: YT, width: 62, height: YB - YT, class: "zoneR" });
-  const zoneT = s("text", { x: 409, y: YM, class: "zoneT", transform: `rotate(90 409 ${YM})` }); zoneT.textContent = "ZONA DE ANOTACIÓN";
+  const area = (key, ...kids) => s("g", { class: `area a-${key}` }, ...kids);
+  const ln = (x1, y1, x2, y2, cls) => s("line", { x1, y1, x2, y2, class: cls });
+  const tx = (x, y, str, cls, extra = {}) => { const e = s("text", { x, y, class: cls, ...extra }); e.textContent = str; return e; };
+
+  // césped con franjas cada 10 yardas
+  for (let k = 0; k < 10; k += 2) fld.append(s("rect", { x: xAt(k * 10), y: YT, width: 10 * PX, height: YB - YT, class: "stripe" }));
+
+  const ezOwn = s("rect", { x: 0, y: YT, width: EZ, height: YB - YT, class: "ez own" });
+  const ezRival = s("rect", { x: XR, y: YT, width: EZ, height: YB - YT, class: "ez rival" });
+  fld.append(area("endzone", ezOwn, ezRival,
+    tx(EZ / 2, YM, "TU ZONA DE ANOTACIÓN", "ftxt", { transform: `rotate(-90 ${EZ / 2} ${YM})` }),
+    tx(XR + EZ / 2, YM, "ZONA DE ANOTACIÓN RIVAL", "ftxt", { transform: `rotate(90 ${XR + EZ / 2} ${YM})` })));
+
+  fld.append(area("red", s("rect", { x: xAt(80), y: YT, width: 20 * PX, height: YB - YT, class: "redZ" }),
+    tx(xAt(90), YT + 14, "ZONA ROJA", "ftxt")));
+
+  const yardLines = [], nums = [];
+  for (let yd = 5; yd < 100; yd += 5) {
+    yardLines.push(ln(xAt(yd), YT, xAt(yd), YB, "fline" + (yd % 10 === 0 ? " ten" : "")));
+    if (yd % 10 === 0 && yd !== 50) {
+      const n = String(yd < 50 ? yd : 100 - yd);
+      nums.push(tx(xAt(yd), YT + 46, n, "yn"), tx(xAt(yd), YB - 46, n, "yn"));
+    }
+  }
+  fld.append(area("yards", ...yardLines, ...nums));
+
+  const hashes = [];
+  for (let yd = 1; yd < 100; yd++) {
+    if (yd % 5 === 0) continue;
+    [YM - 49, YM + 49].forEach(y => hashes.push(ln(xAt(yd), y - 3, xAt(yd), y + 3, "hashT")));
+    hashes.push(ln(xAt(yd), YT, xAt(yd), YT + 5, "hashT"), ln(xAt(yd), YB - 5, xAt(yd), YB, "hashT"));
+  }
+  fld.append(area("hash", ...hashes));
+
+  fld.append(area("mid", ln(xAt(50), YT, xAt(50), YB, "goalL"), s("circle", { cx: xAt(50), cy: YM, r: 26, class: "midLogo" }),
+    tx(xAt(50), YM, "50", "ftxt big"), tx(xAt(50), YT + 14, "MEDIO CAMPO", "ftxt")));
+  fld.append(area("goal", ln(X0, YT, X0, YB, "goalL"), ln(XR, YT, XR, YB, "goalL")));
+  fld.append(area("terr", tx(xAt(25), YB - 14, "TU CAMPO", "ftxt"), tx(xAt(75), YB - 14, "CAMPO RIVAL", "ftxt")));
+  fld.append(area("side", s("rect", { x: 1.5, y: YT, width: W - 3, height: YB - YT, class: "side" })));
+  // poste visto desde arriba: base en el fondo de la zona de anotación y travesaño hacia adentro
+  const post = x => { const d = x < 10 ? 1 : -1;
+    return s("path", { d: `M${x} ${YM} h${d * 8} M${x + d * 8} ${YM - 14} v28`, class: "post" }); };
+  fld.append(area("posts", post(W - 2), post(2)));
+
+  // elementos del juego, siempre por encima
   const band = s("rect", { y: YT, height: YB - YT, class: "band" });
   const gainLine = s("line", { y1: YT, y2: YB, class: "gainLine" });
   const scrLine = s("line", { y1: YT, y2: YB, class: "scrLine" });
-  const gainT = s("text", { y: YT - 4, class: "lblY" }); gainT.textContent = "META: 1.er down";
-  const scrT = s("text", { y: YB + 12, class: "lblB" }); scrT.textContent = "Inicio";
-  const ball = s("g", { class: "ball" }, s("ellipse", { rx: 9, ry: 5.5 }), s("path", { d: "M-4 0H4M-1.5 -2V2M1.5 -2V2", class: "lace" }));
-  const pop = s("text", { class: "pop", y: YM - 20 });
-  fld.append(zone, zoneT, band, scrLine, gainLine, gainT, scrT, ball, pop);
+  const gainT = tx(0, 15, "META: 1.er down", "lblY");
+  const scrT = tx(0, 272, "Inicio", "lblB");
+  const ball = s("g", { class: "ball" }, s("ellipse", { rx: 11, ry: 6.5 }), s("path", { d: "M-5 0H5M-2 -2.5V2.5M2 -2.5V2.5", class: "lace" }));
+  const pop = s("text", { class: "pop", y: YM - 24 });
+  fld.append(band, scrLine, gainLine, gainT, scrT, ball, pop);
 
   const drawField = () => {
     const xs = xAt(state.start), xb = xAt(Math.min(state.ball, 100)), xg = xAt(Math.min(state.start + 10, 100));
     band.setAttribute("x", xs); band.setAttribute("width", Math.max(0, xb - xs));
     scrLine.setAttribute("x1", xs); scrLine.setAttribute("x2", xs);
     gainLine.setAttribute("x1", xg); gainLine.setAttribute("x2", xg);
-    gainT.setAttribute("x", Math.min(xg, 340)); scrT.setAttribute("x", Math.min(xs, 400));
+    gainT.setAttribute("x", Math.max(60, Math.min(xg, W - 60))); scrT.setAttribute("x", Math.max(30, Math.min(xs, W - 30)));
     ball.style.transform = `translate(${xb}px, ${YM}px)`;
-    zone.classList.toggle("on", state.phase === "td");
+    ezRival.classList.toggle("on", state.phase === "td");
   };
+
+  // explicación de cada área del campo
+  const ZONES = {
+    endzone: ["Zonas de anotación", "Las dos franjas de los extremos (10 yardas cada una). Si llevas el balón hasta la zona rival, es touchdown: 6 puntos."],
+    goal: ["Línea de gol", "Es el borde entre el campo y la zona de anotación. Con el balón sobre o más allá de esta línea, el ataque anota."],
+    yards: ["Líneas de yarda", "Una línea cada 5 yardas, y los números cada 10. Cuentan hacia el centro: 10, 20, 30, 40 y 50 en medio. Sirven para medir las 10 yardas de cada primer down."],
+    hash: ["Marcas pequeñas (hash marks)", "Rayitas cada yarda. Las dos filas centrales indican dónde se coloca el balón al empezar cada jugada, según dónde terminó la anterior."],
+    mid: ["Medio campo", "La línea de 50 yardas. Divide el campo en dos mitades: del lado de uno estás cerca de tu zona, del otro cerca de la rival."],
+    red: ["Zona roja", "Las últimas 20 yardas antes de la zona de anotación rival. Se llama así porque ahí anotar es más probable y la defensa aprieta más."],
+    side: ["Bandas laterales", "Los bordes largos del campo. Si el jugador con el balón las pisa, queda fuera y el reloj se detiene."],
+    posts: ["Postes de gol", "En el fondo de cada zona de anotación. Para un gol de campo (3 puntos) o un punto extra, el pateador debe pasar el balón entre los postes y por encima del travesaño."],
+    terr: ["Campo propio y campo rival", "La mitad que defiendes (a tu izquierda) y la mitad del rival (a tu derecha). Cuanto más lejos de tu zona, más cerca estás de anotar."],
+  };
+  const zoneTabs = $("zoneTabs");
+  const setZone = key => {
+    const on = fld.dataset.focus !== key;
+    if (on) fld.dataset.focus = key; else fld.removeAttribute("data-focus");
+    [...zoneTabs.children].forEach(b => b.setAttribute("aria-pressed", String(on && b.dataset.key === key)));
+    $("zoneInfo").textContent = on ? `${ZONES[key][0]}. ${ZONES[key][1]}` : "Toca una zona para saber qué es.";
+  };
+  Object.entries(ZONES).forEach(([k, [name]]) =>
+    zoneTabs.append(h("button", { "data-key": k, "aria-pressed": "false", onclick: () => setZone(k) }, name)));
+
   const flash = (txt) => { pop.textContent = txt; pop.setAttribute("x", xAt(Math.min(state.ball, 100)) - 10);
     pop.classList.remove("go"); void pop.getBoundingClientRect(); pop.classList.add("go"); };
 
@@ -178,8 +237,8 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
   };
   const msg = t => { $("downMsg").textContent = t; };
   const smsg = t => { $("scoreMsg").textContent = t; };
-  const refresh = () => { drawRing(); drawField(); updateScoreBtns(); $("downStatus").textContent = state.phase === "drive"
-    ? `Intento ${state.down} de 4 · faltan ${toGo()} yardas · ${100 - state.ball} para la zona de anotación` : "¡Balón en la zona de anotación!"; };
+  const refresh = () => { drawAttempts(); drawField(); updateScoreBtns(); $("downStatus").textContent = state.phase === "drive"
+    ? `Intento ${state.down} de 4 · faltan ${toGo()} yardas para el primer down` : "¡Balón en la zona de anotación!"; };
   const newDrive = () => { Object.assign(state, { ball: START, start: START, down: 1, phase: "drive" }); };
   const score = (pts, txt, next) => { total += pts; $("scoreTotal").textContent = total; smsg(txt); flash("+" + pts); next(); refresh(); };
 
@@ -580,7 +639,7 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
     links.forEach((a, k) => {
       if (k === i) a.setAttribute("aria-current", "step");
       else a.removeAttribute("aria-current");
-      if (k < i) a.classList.add("done");
+      a.classList.toggle("done", k < i); // al regresar, las etapas posteriores se desmarcan
     });
     status.textContent = `Etapa ${i + 1} · ${steps[i].dataset.title}`;
     count.textContent = `${i + 1} de ${steps.length}`;
@@ -590,8 +649,7 @@ function setTeam(abbr) { selectedTeam = abbr; teamListeners.forEach(fn => fn());
   const complete = () => {
     if (isComplete) return;
     isComplete = true;
-    links.forEach(a => a.removeAttribute("aria-current"));
-    links.at(-1).classList.add("done");
+    links.forEach(a => { a.removeAttribute("aria-current"); a.classList.add("done"); });
     status.textContent = "¡Recorrido completado!";
     count.textContent = `${steps.length} de ${steps.length}`;
     placeBall(steps.length - 1, true);

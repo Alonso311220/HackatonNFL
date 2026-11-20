@@ -91,36 +91,50 @@ button:disabled { opacity:.4; cursor:not-allowed; }
 .status { color:var(--navy-dark); font-size:1.15rem; font-weight:800; }
 .score { color:var(--accent); font-size:2.6rem; font-weight:900; line-height:1.1; }
 
-/* paso 1: anillo y campo */
-.driveTop { display:flex; align-items:center; gap:20px; margin:10px 0; }
-#downRing { width:135px; flex:none; }
-.seg { stroke:#d6dee8; transition:stroke .3s; }
-.seg.done { stroke:var(--green); }
-.seg.cur { stroke:var(--gold); }
-.segN { fill:#fff; stroke:var(--navy-dark); stroke-width:1.4px; paint-order:stroke; font-size:8px; font-weight:900; text-anchor:middle; dominant-baseline:central; }
-.inTrack { stroke:#e3e9f0; }
-.inFill { stroke:var(--blue); transition:stroke-dasharray .4s; }
-.cBig { fill:var(--navy-dark); font-size:26px; font-weight:900; text-anchor:middle; }
-.cSmall { fill:var(--mute); font-size:9px; text-anchor:middle; }
-.k { display:inline-block; width:10px; height:10px; border-radius:50%; vertical-align:-1px; }
-.k1 { background:var(--blue); }
-.k2 { background:var(--gold); }
-#driveField { display:block; width:100%; height:auto; border:1px solid #c5d1df; border-radius:12px; box-shadow:0 5px 15px rgba(9,35,67,.08); }
-.band { fill:rgba(23,105,194,.36); transition:x .4s,width .4s; }
-.gainLine { stroke:var(--gold); stroke-width:3; }
-.scrLine { stroke:#72b5ff; stroke-width:2.5; stroke-dasharray:5 3; }
-.zoneR { fill:rgba(227,160,8,.12); }
-.zoneR.on { fill:rgba(227,160,8,.55); animation:pulse 1s infinite alternate; }
-.zoneT { fill:#fff; opacity:.9; font-size:9px; font-weight:800; text-anchor:middle; dominant-baseline:central; letter-spacing:1px; }
-.lblY,.lblB { stroke:#000; stroke-width:2px; font-size:9px; font-weight:800; text-anchor:middle; paint-order:stroke; }
+/* paso 1: intentos y campo (versión de la rama remota, adaptada al tema claro) */
+.attemptsBox { margin:10px 0; }
+.attempts { display:flex; gap:8px; margin:0 0 10px; padding:0; list-style:none; }
+.attempts li { flex:1; padding:9px 4px; border:2px solid transparent; border-radius:9px; background:#edf2f7; color:var(--mute); text-align:center; font-weight:800; transition:background .25s,color .25s,border-color .25s; }
+.attempts li.used { background:#e3f3ea; color:var(--green); }
+.attempts li.cur { border-color:var(--gold); background:var(--navy); color:#fff; box-shadow:0 4px 10px rgba(1,51,105,.2); }
+.gainMeter { height:12px; margin:8px 0 2px; overflow:hidden; border-radius:6px; background:#e2e8f0; }
+#gainFill { width:0; height:100%; background:var(--blue); transition:width .4s; }
+#driveField { display:block; width:100%; height:auto; border:1px solid #c5d1df; border-radius:12px; background:#155f36; box-shadow:0 5px 15px rgba(9,35,67,.08); }
+.stripe { fill:#1a6a3d; }
+.ez { transition:fill .3s; }
+.ez.own { fill:#24508f; }
+.ez.rival { fill:#8a3a2f; }
+.ez.rival.on { fill:#c9871a; animation:pulse 1s infinite alternate; }
+.fline { stroke:#fff; stroke-opacity:.55; stroke-width:1; }
+.fline.ten { stroke-opacity:.8; stroke-width:1.3; }
+.goalL { stroke:#fff; stroke-width:3; }
+.hashT { stroke:#fff; stroke-opacity:.7; stroke-width:1; }
+.yn { fill:#fff; fill-opacity:.75; font-size:15px; font-weight:800; text-anchor:middle; dominant-baseline:central; }
+.side { fill:none; stroke:#fff; stroke-width:3; }
+.redZ { fill:rgba(229,72,77,.28); }
+.midLogo { fill:rgba(255,255,255,.14); stroke:#fff; stroke-opacity:.6; stroke-width:1.5; }
+.ftxt { fill:#fff; fill-opacity:.9; stroke:#0d3d22; stroke-width:3px; stroke-linejoin:round; paint-order:stroke; font-size:11px; font-weight:700; text-anchor:middle; dominant-baseline:central; letter-spacing:.5px; }
+.ftxt.big { font-size:13px; letter-spacing:2px; }
+.post { fill:none; stroke:#ffd45d; stroke-width:3; stroke-linecap:round; }
+/* resaltado de la zona elegida: el resto se atenúa */
+#driveField[data-focus] .area { opacity:.3; transition:opacity .25s; }
+#driveField[data-focus="endzone"] .a-endzone,#driveField[data-focus="goal"] .a-goal,#driveField[data-focus="yards"] .a-yards,
+#driveField[data-focus="hash"] .a-hash,#driveField[data-focus="mid"] .a-mid,#driveField[data-focus="red"] .a-red,
+#driveField[data-focus="side"] .a-side,#driveField[data-focus="posts"] .a-posts,#driveField[data-focus="terr"] .a-terr { opacity:1; }
+.zones button { padding:6px 10px; font-size:.85rem; }
+.zoneInfo { margin:6px 0 0; }
+.band { fill:rgba(63,140,255,.4); transition:x .4s,width .4s; }
+.gainLine { stroke:#ffd45d; stroke-width:4; }
+.scrLine { stroke:#6fb1ff; stroke-width:3; stroke-dasharray:6 3; }
+.lblY,.lblB { stroke:#000; stroke-width:3px; paint-order:stroke; font-size:12px; font-weight:700; text-anchor:middle; }
 .lblY { fill:#ffd45d; }
 .lblB { fill:#9fd0ff; }
 .ball { transition:transform .5s ease; }
-.ball ellipse { fill:#8b4a1f; stroke:#fff; stroke-width:1.2; }
-.lace { fill:none; stroke:#fff; stroke-width:1; }
-.pop { fill:#ffd45d; stroke:#000; stroke-width:.6px; opacity:0; font-size:22px; font-weight:900; }
+.ball ellipse { fill:#8b4a1f; stroke:#fff; stroke-width:1.5; }
+.lace { fill:none; stroke:#fff; stroke-width:1.2; }
+.pop { fill:#ffd45d; stroke:#000; stroke-width:.6px; opacity:0; font-size:24px; font-weight:800; }
 .pop.go { animation:pop 1.2s ease-out; }
-@keyframes pulse { to { fill-opacity:.25; } }
+@keyframes pulse { to { fill-opacity:.55; } }
 @keyframes pop { 0% { opacity:1; transform:translateY(0); } 100% { opacity:0; transform:translateY(-30px); } }
 
 /* duración */
@@ -225,8 +239,7 @@ select { padding:6px 30px 6px 8px; border:0; background:#fff; color:var(--navy-d
   .eyebrow { font-size:.6rem; }
   h1 { font-size:2rem; }
   .step { padding:18px 15px; border-radius:14px; }
-  .driveTop { align-items:flex-start; flex-direction:column; gap:8px; }
-  #downRing { width:112px; }
+  .attempts { gap:5px; }
   .divisions { grid-template-columns:1fr; }
   .timeline { display:grid; grid-template-columns:repeat(2,1fr); }
   .timeline button { min-height:55px; }
